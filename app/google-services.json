@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1012162940502",
+    "project_id": "app-tiempo-b294c",
+    "storage_bucket": "app-tiempo-b294c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012162940502:android:45c3737f6a32a08f2f35f7",
+        "android_client_info": {
+          "package_name": "com.example.apptiempo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1012162940502-8iju4dq35bqckasp6i96h39sgtlm88np.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOGZWNsVSd70rFBayhGte-VG7fQHBLoe8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1012162940502-8iju4dq35bqckasp6i96h39sgtlm88np.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
