@@ -3,4 +3,9 @@
     <string name="consultar">Consultar</string>
     <string name="municipio">Municipio</string>
     <string name="match_correo">^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$</string>
+    <string name="registrar">registrar</string>
+    <string name="volver">volver</string>
+    <string name="introduzaca_su_email">Introduzaca su Email</string>
+    <string name="introduzca_una_contrase_a">Introduzca una contraseña</string>
+    <string name="repita_la_contrase_a">Repita la contraseña</string>
 </resources>

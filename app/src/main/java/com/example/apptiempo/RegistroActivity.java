@@ -9,6 +9,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class RegistroActivity extends AppCompatActivity {
     EditText intro_nombre, intro_mail, intro_pwd, intro_pwd_conf;
@@ -17,6 +21,7 @@ public class RegistroActivity extends AppCompatActivity {
     ProgressBar progressBar;
 
     FirebaseAuth myAuth;
+    FirebaseFirestore myStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,14 @@ public class RegistroActivity extends AppCompatActivity {
                     //Si no ha habido problemas (la tarea de registrar el usuario ha sido exitosa: Feedback y redireccion a la MainActivity
                     if (task.isSuccessful()) {
                         Toast.makeText(RegistroActivity.this, "Usuario registrado correctamente.", Toast.LENGTH_SHORT).show();
+                        String idUsuario = myAuth.getCurrentUser().getUid();
+                        DocumentReference docRef = myStore.collection("usuarios").document(idUsuario);
+
+                        HashMap<String,String> infoUsuario = new HashMap<>();
+                        infoUsuario.put("Nombre",intro_nombre.getText().toString());
+                        infoUsuario.put("Email",email);
+                        //metes la información del hashmap en el documento
+                        docRef.set(infoUsuario);
 
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);

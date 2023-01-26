@@ -2,6 +2,7 @@ package com.example.apptiempo;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -9,6 +10,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private static TextView textViewResult;
     private EditText edittext;
     private static ModeloReporte mr;
+    FirebaseAuth myAuth;
+    FirebaseFirestore myStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +49,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hacerConsulta(View view) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(MainActivity.this.getAssets().open("municipios.json"), StandardCharsets.UTF_8));
-        IDmunicipio = MetodosJson.getIDMunicipio(edittext.getText().toString().trim(), br);
 
-        if (!IDmunicipio.equals("")) {
-            getEnlaceHttpok(IDmunicipio);
-        } else {
-            textViewResult.setText("No se encontraron datos");
-        }
+
+            getIDMunicipio(edittext.getText().toString().trim());
+
     }
 
     /**
@@ -62,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         Request request = new Request.Builder()
                 .url("https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/" + IDMunicipio)
                 .method("GET", null)
-                .addHeader("api_key", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYWltZWRlbGFmdWVudGUyNUBvdXRsb29rLmVzIiwianRpIjoiOTUyYTQzNzMtMDcwYS00ZDIwLWJiNGItZGZjOGJkNDVmMTdmIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2Njc5MDU2NjYsInVzZXJJZCI6Ijk1MmE0MzczLTA3MGEtNGQyMC1iYjRiLWRmYzhiZDQ1ZjE3ZiIsInJvbGUiOiIifQ.aNKkIY7zR71WoS42ALgTToMY9zf-jHzi3dYh0rWtQ3o")
+                .addHeader("api_key", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYWltZWRlbGFmdWVudGUyNUBvdXRsb29rLmVzIiwianRpIjoiYjMyMTA3YTctNjAwZS00MTBiLTlkNWMtOTAxN2FkMWM2MTc0IiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2NzQ3NDQ1OTgsInVzZXJJZCI6ImIzMjEwN2E3LTYwMGUtNDEwYi05ZDVjLTkwMTdhZDFjNjE3NCIsInJvbGUiOiIifQ.51Y4dwn7sS7ePdcJEnfEUvdCIAcicDeA_pdIK6sfBbM")
                 .build();
 
         //Metemos la request en cola
@@ -120,5 +126,52 @@ public class MainActivity extends AppCompatActivity {
                 textViewResult.setText("Error al hacer la consulta");
             }
         });
+    }
+
+    public void getIDMunicipio(String municipio_nombre) {
+        myStore = FirebaseFirestore.getInstance();
+//        String IDmunicipio = "";
+//
+//        try {
+//            JsonParser parser = new JsonParser();
+//
+//            Object obj = parser.parse(br);
+//            JSONArray array = null;
+//            try {
+//                array = new JSONArray(obj.toString());
+//                br.close();
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//            for (int i = 0; i < array.length(); i++) {
+//                try {
+//                    if (array.getJSONObject(i).getString("nombre").equalsIgnoreCase(municipio_nombre)) {
+//                        IDmunicipio = array.getJSONObject(i).getString("municipio_id");
+//
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//        } catch (FileNotFoundException e) {
+//            System.out.println(e);
+//        } catch (ClassCastException | NullPointerException | IOException e) {
+//            e.printStackTrace();
+//        }
+
+        DocumentReference docRef = myStore.collection("municipiosEspaña").document(municipio_nombre);
+
+        docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+               String resultado = value.getString("municipio_id");
+                System.out.println(resultado);
+                   getEnlaceHttpok(resultado);
+
+            }
+        });
+
     }
 }
