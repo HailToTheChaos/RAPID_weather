@@ -2,7 +2,6 @@ package com.example.apptiempo;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -11,25 +10,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import okhttp3.*;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IDMunicipioCallback {
     Button boton_consultar;
     private String IDmunicipio;
     private static TextView textViewResult;
@@ -48,12 +43,21 @@ public class MainActivity extends AppCompatActivity {
         textViewResult = findViewById(R.id.textViewResult);
     }
 
-    public void hacerConsulta(View view) throws IOException {
-
-
-            getIDMunicipio(edittext.getText().toString().trim());
-
+    public void hacerConsulta(View view) {
+        getIDMunicipio(edittext.getText().toString().trim(), new IDMunicipioCallback() {
+            @Override
+            public void onIDMunicipioRetrieved(String id) {
+                IDmunicipio = id;
+                //controlamos que no nos devuelva vacío.
+                if (IDmunicipio!=null) {
+                    getEnlaceHttpok(IDmunicipio);
+                } else {
+                    textViewResult.setText("No se encontraron datos");
+                }
+            }
+        });
     }
+
 
     /**
      * Método para obtener el enlace con el tiempo de AEMET
@@ -128,50 +132,28 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void getIDMunicipio(String municipio_nombre) {
+    public void getIDMunicipio(String municipio_nombre, IDMunicipioCallback callback) {
         myStore = FirebaseFirestore.getInstance();
-//        String IDmunicipio = "";
-//
-//        try {
-//            JsonParser parser = new JsonParser();
-//
-//            Object obj = parser.parse(br);
-//            JSONArray array = null;
-//            try {
-//                array = new JSONArray(obj.toString());
-//                br.close();
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//
-//            for (int i = 0; i < array.length(); i++) {
-//                try {
-//                    if (array.getJSONObject(i).getString("nombre").equalsIgnoreCase(municipio_nombre)) {
-//                        IDmunicipio = array.getJSONObject(i).getString("municipio_id");
-//
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//        } catch (FileNotFoundException e) {
-//            System.out.println(e);
-//        } catch (ClassCastException | NullPointerException | IOException e) {
-//            e.printStackTrace();
-//        }
 
-        DocumentReference docRef = myStore.collection("municipiosEspaña").document(municipio_nombre);
+        ArrayList<String> idmunicipio = new ArrayList<>();
+        myStore.collection("municipiosEspaña").document(municipio_nombre)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        idmunicipio.add(documentSnapshot.getString("municipio_id"));
+                        //hago uso de mi interfaz para evitar asincronización.
+                        callback.onIDMunicipioRetrieved(idmunicipio.get(idmunicipio.size() - 1));
+                    }
 
-        docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-               String resultado = value.getString("municipio_id");
-                System.out.println(resultado);
-                   getEnlaceHttpok(resultado);
+                    public void onFailure(DocumentSnapshot documentSnapshot){
 
-            }
-        });
+                    }
+                });
+    }
+
+    @Override
+    public void onIDMunicipioRetrieved(String id) {
 
     }
 }

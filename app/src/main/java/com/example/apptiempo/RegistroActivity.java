@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -37,6 +38,7 @@ public class RegistroActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         myAuth = FirebaseAuth.getInstance();
+        myStore = FirebaseFirestore.getInstance();
         String idUsuario;
     }
 
@@ -65,15 +67,17 @@ public class RegistroActivity extends AppCompatActivity {
                         DocumentReference docRef = myStore.collection("usuarios").document(idUsuario);
 
                         HashMap<String,String> infoUsuario = new HashMap<>();
-                        infoUsuario.put("Nombre",intro_nombre.getText().toString());
+                        infoUsuario.put("Nombre",nombre);
                         infoUsuario.put("Email",email);
                         //metes la información del hashmap en el documento
                         docRef.set(infoUsuario);
 
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        sendVerificationEmail();
+                        Intent intent = new Intent(getApplicationContext(), loginActivity.class);
                         startActivity(intent);
                         progressBar.setVisibility(View.INVISIBLE);
                     } else {
+                        boton_registro.setError("El usuario no se ha podido crear. Intentelo de nuevo.");
                         //Toast.makeText(Register.this,"Se ha producido une error en el proceso de registro.", Toast.LENGTH_SHORT ).show();
                         Toast.makeText(RegistroActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.INVISIBLE);
@@ -109,6 +113,23 @@ public class RegistroActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void sendVerificationEmail(){
+        FirebaseUser user = myAuth.getCurrentUser();
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(RegistroActivity.this, "Verifique su correo", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(RegistroActivity.this, "No se pudo enviar el correo de verificación", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
 }

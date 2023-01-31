@@ -10,12 +10,12 @@
         android:id="@+id/textView_formularioRegistro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="formulario de registro"
-        android:textSize="34sp"
+        android:text="@string/formulario_de_registro"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.366"
+        app:layout_constraintHorizontal_bias="0.551"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.028" />
@@ -26,23 +26,23 @@
         android:layout_height="wrap_content"
         android:height="48dp"
         android:ems="10"
-        android:hint="introduzca su nombre"
+        android:hint="@string/introduzca_su_nombre"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textColorHint="#757575"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.262"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.165"
-        android:importantForAutofill="no" />
+        app:layout_constraintVertical_bias="0.174" />
 
     <TextView
         android:id="@+id/textView_nombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nombre"
+        android:text="@string/nombre"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.044"
@@ -54,10 +54,11 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="contraseña"
+        android:layout_marginTop="24dp"
+        android:text="@string/contrase_a"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintHorizontal_bias="0.047"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email_registro" />
 
@@ -65,13 +66,13 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="email"
+        android:text="@string/email"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_nombre"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.029" />
 
     <Button
         android:id="@+id/boton_registrar"
@@ -79,27 +80,26 @@
         android:layout_height="wrap_content"
         android:onClick="registrar"
         android:text="@string/registrar"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.713" />
+        app:layout_constraintVertical_bias="0.769" />
 
     <TextView
         android:id="@+id/textView_volver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
         android:onClick="volverLogin"
         android:text="@string/volver"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/boton_registrar"
-        app:layout_constraintVertical_bias="0.209" />
+        app:layout_constraintVertical_bias="0.2" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -113,7 +113,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_volver"
-        app:layout_constraintVertical_bias="0.367" />
+        app:layout_constraintVertical_bias="0.333" />
 
     <EditText
         android:id="@+id/email_registro"
@@ -123,37 +123,57 @@
         android:ems="10"
         android:hint="@string/introduzaca_su_email"
         android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.311"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-    <EditText
-        android:id="@+id/contraseña_registro"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/introduzca_una_contrase_a"
-        android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.262"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.469" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintVertical_bias="0.0"
+        android:autofillHints="emailAddress" />
 
-    <EditText
-        android:id="@+id/confi_contraseña_registro"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/Widget.Design.TextInputLayout"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/repita_la_contrase_a"
-        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.544"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/contraseña_registro"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:autofillHints="password"
+            android:hint="@string/introduzca_una_contrase_a"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2"
+        style="@style/Widget.Design.TextInputLayout"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/boton_registrar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.262"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contraseña_registro"
-        app:layout_constraintVertical_bias="0.631" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.967"
+        app:passwordToggleEnabled="true">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/confi_contraseña_registro"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:autofillHints="password"
+            android:hint="@string/repita_la_contrase_a"
+            android:inputType="textPassword"
+            tools:layout_editor_absoluteX="26dp"
+            tools:layout_editor_absoluteY="187dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

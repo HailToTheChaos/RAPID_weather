@@ -60,6 +60,7 @@ public class loginActivity extends AppCompatActivity {
                         startActivity(intent);
                         progressBar.setVisibility(View.INVISIBLE);
                     } else {
+                        intro_mail.setError("Email y contraseña no válidos");
                         //Para debugging
                         Toast.makeText(loginActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.INVISIBLE);
@@ -78,6 +79,11 @@ public class loginActivity extends AppCompatActivity {
 
         if(password.isEmpty()){
             intro_pwd.setError("Es necesario que introduzca la contraseña");
+            return false;
+        }
+
+        if (!email.matches(getString(R.string.match_correo))) {
+            intro_mail.setError("Correo no válido");
             return false;
         }
 
