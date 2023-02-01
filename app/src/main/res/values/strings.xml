@@ -5,17 +5,17 @@
     <string name="match_correo">^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$</string>
     <string name="registrar">registrar</string>
     <string name="volver">volver</string>
-    <string name="introduzaca_su_email">Introduzaca su Email</string>
+    <string name="introduzaca_su_email">Introduzca su Email</string>
     <string name="introduzca_una_contrase_a">Introduzca una contraseña</string>
     <string name="repita_la_contrase_a">Repita la contraseña</string>
     <string name="introduzca_su_contrase_a">Introduzca su contraseña</string>
     <string name="introduzca_su_email">Introduzca su email</string>
     <string name="crear_una_cuenta">Crear una cuenta</string>
-    <string name="formulario_de_acceso">Formulario de acceso</string>
+    <string name="formulario_de_acceso">FORMULARIO DE ACCESO</string>
     <string name="acceder">acceder</string>
     <string name="contrase_a">Contraseña</string>
     <string name="email">Email</string>
-    <string name="formulario_de_registro">Formulario de registro</string>
+    <string name="formulario_de_registro">FORMULARIO DE REGISTRO</string>
     <string name="introduzca_su_nombre">Introduzca su nombre</string>
     <string name="nombre">Nombre</string>
 </resources>
