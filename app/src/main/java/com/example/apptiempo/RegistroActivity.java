@@ -77,7 +77,6 @@ public class RegistroActivity extends AppCompatActivity {
                         startActivity(intent);
                         progressBar.setVisibility(View.INVISIBLE);
                     } else {
-                        boton_registro.setError("El usuario no se ha podido crear. Intentelo de nuevo.");
                         //Toast.makeText(Register.this,"Se ha producido une error en el proceso de registro.", Toast.LENGTH_SHORT ).show();
                         Toast.makeText(RegistroActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.INVISIBLE);
@@ -117,19 +116,9 @@ public class RegistroActivity extends AppCompatActivity {
 
     private void sendVerificationEmail(){
         FirebaseUser user = myAuth.getCurrentUser();
-        user.sendEmailVerification()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(RegistroActivity.this, "Verifique su correo", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            Toast.makeText(RegistroActivity.this, "No se pudo enviar el correo de verificación", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        if(user != null) {
+            user.sendEmailVerification();
+        }
     }
 
 }

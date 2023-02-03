@@ -1,159 +1,67 @@
 package com.example.apptiempo;
 
-
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+public class MainActivity extends AppCompatActivity {
+    private FirebaseAuth myauth;
+    private FirebaseFirestore myStore;
+    private String idUsuario;
+    private TextView bienvenida;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-import okhttp3.*;
-
-public class MainActivity extends AppCompatActivity implements IDMunicipioCallback {
-    Button boton_consultar;
-    private String IDmunicipio;
-    private static TextView textViewResult;
-    private EditText edittext;
-    private static ModeloReporte mr;
-    FirebaseAuth myAuth;
-    FirebaseFirestore myStore;
+    public static final String SHARED_PREFS ="sharedPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        boton_consultar = findViewById(R.id.boton_consultar);
-        edittext = findViewById(R.id.editText_municipio);
-        textViewResult = findViewById(R.id.textViewResult);
-    }
-
-    public void hacerConsulta(View view) {
-        getIDMunicipio(edittext.getText().toString().trim(), new IDMunicipioCallback() {
-            @Override
-            public void onIDMunicipioRetrieved(String id) {
-                IDmunicipio = id;
-                //controlamos que no nos devuelva vacío.
-                if (IDmunicipio!=null) {
-                    getEnlaceHttpok(IDmunicipio);
-                } else {
-                    textViewResult.setText("No se encontraron datos");
-                }
-            }
-        });
-    }
-
-
-    /**
-     * Método para obtener el enlace con el tiempo de AEMET
-     *
-     * @param IDMunicipio
-     */
-    public static void getEnlaceHttpok(String IDMunicipio) {
-        //Instanciamos el cliente OkHttp
-        OkHttpClient client = new OkHttpClient();
-
-        //Creamos la request y en el builder le metemos la url, el metodo GET y el header(La api key)
-        Request request = new Request.Builder()
-                .url("https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/" + IDMunicipio)
-                .method("GET", null)
-                .addHeader("api_key", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYWltZWRlbGFmdWVudGUyNUBvdXRsb29rLmVzIiwianRpIjoiYjMyMTA3YTctNjAwZS00MTBiLTlkNWMtOTAxN2FkMWM2MTc0IiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2NzQ3NDQ1OTgsInVzZXJJZCI6ImIzMjEwN2E3LTYwMGUtNDEwYi05ZDVjLTkwMTdhZDFjNjE3NCIsInJvbGUiOiIifQ.51Y4dwn7sS7ePdcJEnfEUvdCIAcicDeA_pdIK6sfBbM")
-                .build();
-
-        //Metemos la request en cola
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                textViewResult.setText("Error al hacer la consulta");
-            }
-
-            //Si la respuesta devuelve
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-//                if (response.isSuccessful()) {
-                String jsonData = response.body().string();
-                try {
-                    JSONObject jsonobj = new JSONObject(jsonData);
-                    String enlace = MetodosJson.getURL(jsonobj);
-                    getTiempo(enlace);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-//                }
-            }
-        });
-
-    }
-
-    private static void getTiempo(String enlace) {
-        OkHttpClient client2 = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(enlace)
-                .method("GET", null)
-                .build();
-
-        client2.newCall(request).enqueue(new Callback() {
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String jsonData = response.body().string();
-                    try {
-                        JSONArray jsonarr = new JSONArray(jsonData);
-                        mr = new ModeloReporte(jsonarr);
-                        textViewResult.setText(mr.toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                textViewResult.setText("Error al hacer la consulta");
-            }
-        });
-    }
-
-    public void getIDMunicipio(String municipio_nombre, IDMunicipioCallback callback) {
+        myauth = FirebaseAuth.getInstance();
+        idUsuario = myauth.getCurrentUser().getUid();
         myStore = FirebaseFirestore.getInstance();
-
-        ArrayList<String> idmunicipio = new ArrayList<>();
-        myStore.collection("municipiosEspaña").document(municipio_nombre)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        idmunicipio.add(documentSnapshot.getString("municipio_id"));
-                        //hago uso de mi interfaz para evitar asincronización.
-                        callback.onIDMunicipioRetrieved(idmunicipio.get(idmunicipio.size() - 1));
-                    }
-
-                    public void onFailure(DocumentSnapshot documentSnapshot){
-
-                    }
-                });
+        bienvenida = findViewById(R.id.textView_bienvenida);
+        DocumentReference docRef = myStore.collection("usuarios").document(idUsuario);
+        docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                bienvenida.setText("Bienvenido a tu sesión " + value.getString("Nombre") + " ¿que desea realizar?");
+            }
+        });
     }
 
-    @Override
-    public void onIDMunicipioRetrieved(String id) {
+    public void consultarTiempo(View view) {
+        Intent intent = new Intent(getApplicationContext(), ConsultarTiempo.class);
+        startActivity(intent);
+    }
 
+
+    public void cerrar_sesion(View view) {
+        SharedPreferences sharedprefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedprefs.edit();
+        edit.putString("name", "");
+        edit.apply();
+        if (myauth != null && myStore != null) {
+            myauth.signOut();
+            myStore.terminate();
+            Toast.makeText(this, "Cerrando sesión.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), loginActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Toast.makeText(this, "Error al cerrar sesión.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

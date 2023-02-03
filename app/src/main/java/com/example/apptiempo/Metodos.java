@@ -5,12 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class MetodosJson {
-
-
-    private static ModeloReporte mr = new ModeloReporte();
-
-
+public class Metodos {
 
     public static String getURL(JSONObject jsonobj) {
 
@@ -25,7 +20,10 @@ public class MetodosJson {
         return enlace;
     }
 
-
+    public static String capitalize(String in){
+        String a= in.toUpperCase();
+        return a.charAt(0)+in.substring(1);
+}
 
 
 }
