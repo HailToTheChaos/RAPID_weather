@@ -4,9 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalDateTime;
-
-public class ModeloReporte {
+public class ModeloReporteDiario {
     private String nombre_municipio;
     private String nombre_provincia;
     private String temp_max;
@@ -19,18 +17,16 @@ public class ModeloReporte {
     private String tiempo24;
 
 
-    public ModeloReporte() {
+    public ModeloReporteDiario() {
 
     }
 
-    public ModeloReporte(JSONArray jsonarr){
+    public ModeloReporteDiario(JSONArray jsonarrDiario){
         JSONObject jobj;
         try {
-            jobj = jsonarr.getJSONObject(0);
+            jobj = jsonarrDiario.getJSONObject(0);
 
             this.nombre_municipio = jobj.getString("nombre");
-
-            nombre_provincia = jobj.getString("provincia");
 
             this.tiempo6 = jobj.getJSONObject("prediccion").getJSONArray("dia").getJSONObject(0)
                     .getJSONObject("temperatura").getJSONArray("dato").getJSONObject(0).getString("value");
@@ -64,13 +60,6 @@ public class ModeloReporte {
         this.nombre_municipio = nombre_municipio;
     }
 
-    public String getNombre_provincia() {
-        return nombre_provincia;
-    }
-
-    public void setNombre_provincia(String nombre_provincia) {
-        this.nombre_provincia = nombre_provincia;
-    }
 
     public String getFecha() {
         return fecha;
@@ -161,7 +150,6 @@ public class ModeloReporte {
 
     public String toString() {
         return "Predicción de " + this.nombre_municipio + "\n" +
-                "Nombre de la provincia: " + this.nombre_provincia + "\n" +
                 "Temperatura por horas: \n" +
                 "-Temperatura a las 6:00: " + this.tiempo6 + "ºC" + "\n" +
                 "-Temperatura a las 12:00: " + this.tiempo12 + "ºC" + "\n" +

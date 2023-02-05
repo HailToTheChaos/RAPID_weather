@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -25,24 +24,63 @@ import java.util.ArrayList;
 import okhttp3.*;
 
 public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCallback {
-    Button boton_consultar;
     private String IDmunicipio;
-    private static TextView textViewResult;
-    private EditText edittext;
-    private static ModeloReporte mr;
+
+    private static ModeloReporteDiario mr;
     FirebaseAuth myAuth;
     FirebaseFirestore myStore;
     String municipio;
+
+    EditText edittext;
+
+    ArrayList<TextView> tViews;
+    OkHttpClient client;
+//    SearchView buscador;
+//    Query query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consultar_tiempo);
 
-        boton_consultar = findViewById(R.id.boton_consultar);
+//        buscador = findViewById(R.id.busquedaMunicipio);
+
+
+//        search_view();
         edittext = findViewById(R.id.editText_municipio);
-        textViewResult = findViewById(R.id.textViewResult);
+        myStore = FirebaseFirestore.getInstance();
+
+        añadirTextViews();
     }
+
+    private void añadirTextViews() {
+        tViews.add(findViewById(R.id.tv_municipio));
+    }
+
+//    private void search_view() {
+//        buscador.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                textSearch(query);
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//        });
+//    }
+
+//    private void textSearch(String entrada){
+//        Query query = myStore.collection("municipiosEspaña")
+//                .orderBy("name").startAt(entrada).endAt(entrada+"~");
+//
+//        FirestoreRecyclerOptions<Municipio> firestoreRecyclerOptions =
+//                new FirestoreRecyclerOptions.Builder<Municipio>()
+//                        .setQuery(query,Municipio.class).build();
+//
+//    }
 
     public void hacerConsulta(View view) {
         municipio = Metodos.capitalize(edittext.getText().toString().trim());
@@ -54,7 +92,7 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                 if (IDmunicipio!=null) {
                     getEnlaceHttpok(IDmunicipio);
                 } else {
-                    textViewResult.setText("No se encontraron datos");
+                    tViews.get(0).setText("No se encontró el municipio");
                 }
             }
         });
@@ -66,51 +104,64 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
      *
      * @param IDMunicipio
      */
-    public static void getEnlaceHttpok(String IDMunicipio) {
-        //Instanciamos el cliente OkHttp
-        OkHttpClient client = new OkHttpClient();
-
+    public void getEnlaceHttpok(String IDMunicipio) {
         //Creamos la request y en el builder le metemos la url, el metodo GET y el header(La api key)
-        Request request = new Request.Builder()
+        Request request1 = new Request.Builder()
                 .url("https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/" + IDMunicipio)
                 .method("GET", null)
                 .addHeader("api_key", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYWltZWRlbGFmdWVudGUyNUBvdXRsb29rLmVzIiwianRpIjoiYjMyMTA3YTctNjAwZS00MTBiLTlkNWMtOTAxN2FkMWM2MTc0IiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2NzQ3NDQ1OTgsInVzZXJJZCI6ImIzMjEwN2E3LTYwMGUtNDEwYi05ZDVjLTkwMTdhZDFjNjE3NCIsInJvbGUiOiIifQ.51Y4dwn7sS7ePdcJEnfEUvdCIAcicDeA_pdIK6sfBbM")
                 .build();
 
+        requestTiempo(request1,"diario");
+
+        Request request2 = new Request.Builder()
+                .url("https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/" + IDMunicipio)
+                .method("GET", null)
+                .addHeader("api_key", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYWltZWRlbGFmdWVudGUyNUBvdXRsb29rLmVzIiwianRpIjoiYjMyMTA3YTctNjAwZS00MTBiLTlkNWMtOTAxN2FkMWM2MTc0IiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2NzQ3NDQ1OTgsInVzZXJJZCI6ImIzMjEwN2E3LTYwMGUtNDEwYi05ZDVjLTkwMTdhZDFjNjE3NCIsInJvbGUiOiIifQ.51Y4dwn7sS7ePdcJEnfEUvdCIAcicDeA_pdIK6sfBbM")
+                .build();
+
         //Metemos la request en cola
+
+
+    }
+
+    private void requestTiempo(Request request, String tipo){
+        //Instanciamos el cliente OkHttp
+        OkHttpClient client = new OkHttpClient();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                textViewResult.setText("Error al hacer la consulta");
+                tViews.get(0).setText("No se encontró el municipio");
             }
 
             //Si la respuesta devuelve
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-//                if (response.isSuccessful()) {
                 String jsonData = response.body().string();
                 try {
                     JSONObject jsonobj = new JSONObject(jsonData);
                     String enlace = Metodos.getURL(jsonobj);
-                    getTiempo(enlace);
+                    if(tipo.equalsIgnoreCase("diario")) {
+                        getTiempoDiario(enlace);
+                    } else if(tipo.equalsIgnoreCase("horario")){
+                        getTiempoHorario(enlace);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-//                }
             }
         });
-
     }
 
-    private static void getTiempo(String enlace) {
-        OkHttpClient client2 = new OkHttpClient();
+    private void getTiempoHorario(String enlace) {
+        OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
                 .url(enlace)
                 .method("GET", null)
                 .build();
 
-        client2.newCall(request).enqueue(new Callback() {
+        client.newCall(request).enqueue(new Callback() {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -118,8 +169,8 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                     String jsonData = response.body().string();
                     try {
                         JSONArray jsonarr = new JSONArray(jsonData);
-                        mr = new ModeloReporte(jsonarr);
-                        textViewResult.setText(mr.toString());
+
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -129,13 +180,45 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
 
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                textViewResult.setText("Error al hacer la consulta");
+
+            }
+        });
+    }
+
+    private static void getTiempoDiario(String enlace) {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(enlace)
+                .method("GET", null)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String jsonData = response.body().string();
+                    try {
+                        JSONArray jsonarr = new JSONArray(jsonData);
+                        mr = new ModeloReporteDiario(jsonarr);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
             }
         });
     }
 
     public void getIDMunicipio(String municipio_nombre, IDMunicipioCallback callback) {
-        myStore = FirebaseFirestore.getInstance();
+
 
         ArrayList<String> idmunicipio = new ArrayList<>();
         myStore.collection("municipiosEspaña").document(municipio_nombre)
@@ -158,4 +241,5 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
     public void onIDMunicipioRetrieved(String id) {
 
     }
+
 }

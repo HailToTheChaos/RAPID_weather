@@ -43,11 +43,7 @@ public class HelpPassword extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(getApplicationContext(),"Por favor revise su correo para restaurar su contraseña",Toast.LENGTH_LONG).show();
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+
                     finish();
                 }
             }
