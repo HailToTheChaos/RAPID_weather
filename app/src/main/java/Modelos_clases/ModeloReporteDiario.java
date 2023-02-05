@@ -1,44 +1,37 @@
-package com.example.apptiempo;
+package Modelos_clases;
+
+import androidx.annotation.NonNull;
+
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 public class ModeloReporteDiario {
     private String nombre_municipio;
-    private String nombre_provincia;
     private String temp_max;
     private String temp_min;
-    private String temp_actual;
+    private int probPrec;
+    private String estadoCielo;
+    private String viento;
+    private String sensacionTermica;
+    private int UV;
     private String fecha;
-    private String tiempo6;
-    private String tiempo12;
-    private String tiempo18;
-    private String tiempo24;
+
 
 
     public ModeloReporteDiario() {
 
     }
 
-    public ModeloReporteDiario(JSONArray jsonarrDiario){
-        JSONObject jobj;
+    public ModeloReporteDiario(JSONObject jsonarrDiario){
+
         try {
-            jobj = jsonarrDiario.getJSONObject(0);
 
             this.nombre_municipio = jobj.getString("nombre");
-
-            this.tiempo6 = jobj.getJSONObject("prediccion").getJSONArray("dia").getJSONObject(0)
-                    .getJSONObject("temperatura").getJSONArray("dato").getJSONObject(0).getString("value");
-
-            this.tiempo12 = jobj.getJSONObject("prediccion").getJSONArray("dia").getJSONObject(0)
-                    .getJSONObject("temperatura").getJSONArray("dato").getJSONObject(1).getString("value");
-
-            this.tiempo18 = jobj.getJSONObject("prediccion").getJSONArray("dia").getJSONObject(0)
-                    .getJSONObject("temperatura").getJSONArray("dato").getJSONObject(2).getString("value");
-
-            this.tiempo24 = jobj.getJSONObject("prediccion").getJSONArray("dia").getJSONObject(0)
-                    .getJSONObject("temperatura").getJSONArray("dato").getJSONObject(3).getString("value");
 
             this.temp_max = (jobj.getJSONObject("prediccion").getJSONArray("dia").getJSONObject(0).
                     getJSONObject("temperatura").getString("maxima"));
@@ -85,45 +78,6 @@ public class ModeloReporteDiario {
         this.temp_min = temp_min;
     }
 
-    public String getTiempo6() {
-        return tiempo6;
-    }
-
-    public void setTiempo6(String tiempo6) {
-        this.tiempo6 = tiempo6;
-    }
-
-    public String getTiempo12() {
-        return tiempo12;
-    }
-
-    public void setTiempo12(String tiempo12) {
-        this.tiempo12 = tiempo12;
-    }
-
-    public String getTiempo18() {
-        return tiempo18;
-    }
-
-    public void setTiempo18(String tiempo18) {
-        this.tiempo18 = tiempo18;
-    }
-
-    public String getTiempo24() {
-        return tiempo24;
-    }
-
-    public void setTiempo24(String tiempo24) {
-        this.tiempo24 = tiempo24;
-    }
-
-    public String getTemp_actual() {
-        return temp_actual;
-    }
-
-    public void setTemp_actual(String temp_actual) {
-        this.temp_actual = temp_actual;
-    }
 
     //Metodos
 
@@ -148,13 +102,11 @@ public class ModeloReporteDiario {
 //        return "";
 //    }
 
+    @NonNull
+    @Override
     public String toString() {
         return "Predicción de " + this.nombre_municipio + "\n" +
                 "Temperatura por horas: \n" +
-                "-Temperatura a las 6:00: " + this.tiempo6 + "ºC" + "\n" +
-                "-Temperatura a las 12:00: " + this.tiempo12 + "ºC" + "\n" +
-                "-Temperatura a las 18:00: " + this.tiempo18 + "ºC" + "\n" +
-                "-Temperatura a las 24:00: " + this.tiempo24 + "ºC" + "\n" +
                 "Temperatura máxima: " + this.temp_max + "ºC" + "\n" +
                 "Temperatura mínima: " + this.temp_min + "ºC" + "\n" +
                 "Fecha del reporte: " + this.fecha;

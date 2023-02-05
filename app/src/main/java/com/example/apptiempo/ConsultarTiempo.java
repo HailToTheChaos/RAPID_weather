@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Modelos_clases.ModeloReporteDiario;
 import okhttp3.*;
 
 public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCallback {
