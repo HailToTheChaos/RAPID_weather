@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -95,13 +96,18 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                     getEnlaceHttpok(IDmunicipio);
                     System.out.println(mrGeneral);
                 } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-                    builder.setMessage("No se encontro el municipio").create().show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ConsultarTiempo.this);
+                    builder.setMessage("No se encontró el municipio").setNeutralButton("Salir", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();//con esto se sale
+                        }
+                    }).create().show();
 
                 }
             }
-        });
-    }
+ });
+}
 
 
     /**
@@ -129,6 +135,7 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
 
         //Metemos la request en cola
 
+        requestTiempo(request2,"horario");
         System.out.println(mrGeneral);
     }
 
@@ -177,8 +184,9 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                     String jsonData = response.body().string();
                     try {
                         JSONArray jsonarr = new JSONArray(jsonData);
-//                        mrGeneral.setModelosHorarios(jsonarr);
+                        mrGeneral.setModelosHorarios(jsonarr);
 
+                        System.out.println(mrGeneral);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
