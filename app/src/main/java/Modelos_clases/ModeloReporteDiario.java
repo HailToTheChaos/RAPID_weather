@@ -1,5 +1,7 @@
 package Modelos_clases;
 
+import android.os.Build;
+
 import androidx.annotation.NonNull;
 
 import com.google.gson.JsonObject;
@@ -8,18 +10,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class ModeloReporteDiario {
-    private String nombre_municipio;
     private String temp_max;
     private String temp_min;
     private int probPrec;
     private String estadoCielo;
     private String viento;
-    private String sensacionTermica;
+    private String sensacionTermicaMax;
+    private String sensacionTermicaMin;
     private int UV;
     private String fecha;
+    private static LocalDateTime locaDate;
+    private int hora;
+
 
 
 
@@ -27,32 +34,56 @@ public class ModeloReporteDiario {
 
     }
 
-    public ModeloReporteDiario(JSONObject jsonarrDiario){
+    public ModeloReporteDiario(JSONObject jsonObjDiario){
 
         try {
+            //HORA
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                locaDate = LocalDateTime.now();
+                this.hora = locaDate.getHour();
+            }
 
-            this.nombre_municipio = jobj.getString("nombre");
+            //TEMP MAX
+            this.temp_max = jsonObjDiario.getJSONObject("temperatura").getString("maxima");
 
-            this.temp_max = (jobj.getJSONObject("prediccion").getJSONArray("dia").getJSONObject(0).
-                    getJSONObject("temperatura").getString("maxima"));
+            /*(jobj.getJSONObject("prediccion").getJSONArray("dia").getJSONObject(0).
+                    getJSONObject("temperatura").getString("maxima"));*/
 
-            this.temp_min = jobj.getJSONObject("prediccion").getJSONArray("dia").getJSONObject(0).
-                    getJSONObject("temperatura").getString("minima");
+            //TEMP MIN
+            this.temp_min = jsonObjDiario.getJSONObject("temperatura").getString("minima");
 
-            this.fecha = jobj.getString("elaborado");
+
+            //PROB PRECIPITACION
+            this.probPrec = Integer.parseInt(jsonObjDiario.getJSONArray("probPrecipitacion").getJSONObject(0).getString("value"));
+
+            //Revisar
+            JSONArray estadoAux = jsonObjDiario.getJSONArray("estadoCielo");
+            for (int i = 0; i < estadoAux.length(); i++) {
+                if(!estadoAux.getJSONObject(i).getString("descripcion").equals("")){
+                    this.estadoCielo = estadoAux.getJSONObject(i).getString("descripcion");
+                }
+            }
+
+
+            //VIENTO
+
+                this.viento = jsonObjDiario.getJSONArray("viento").getJSONObject(0).getString("velocidad");
+
+            //SENSACION TÉRMICA MAX
+            this.sensacionTermicaMax = jsonObjDiario.getJSONObject("sensTermica").getString("maxima");
+
+            //SENSACION TÉRMICA MIN
+            this.sensacionTermicaMin = jsonObjDiario.getJSONObject("sensTermica").getString("minima");
+
+            //UV
+//            this.UV = Integer.parseInt(jsonObjDiario.getString("uvMax"));
+
+            //FECHA
+            this.fecha = jsonObjDiario.getString("fecha");
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
-    public String getNombre_municipio() {
-        return nombre_municipio;
-    }
-
-    public void setNombre_municipio(String nombre_municipio) {
-        this.nombre_municipio = nombre_municipio;
-    }
-
 
     public String getFecha() {
         return fecha;
@@ -105,11 +136,23 @@ public class ModeloReporteDiario {
     @NonNull
     @Override
     public String toString() {
-        return "Predicción de " + this.nombre_municipio + "\n" +
-                "Temperatura por horas: \n" +
+        DateTimeFormatter dtf = null;
+        String fecha_reporte="";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+            fecha_reporte = dtf.format(LocalDateTime.now());
+        }
+
+        return  "Temperatura por horas: \n" +
                 "Temperatura máxima: " + this.temp_max + "ºC" + "\n" +
                 "Temperatura mínima: " + this.temp_min + "ºC" + "\n" +
-                "Fecha del reporte: " + this.fecha;
-    }
+                "Fecha del reporte: " + fecha_reporte +"\n"+
+                "Probabilidad de Precipitación: "+ this.probPrec+" %"+"\n"+
+                "Estado del cielo: "+this.estadoCielo+"\n"+
+                "Viento: "+this.viento+" km/h"+"\n"+
+                "Sensación térmica min: "+this.sensacionTermicaMin+"ºC"+"\n"+
+                "Sensación térmica max: "+this.sensacionTermicaMax+"ºC"+"\n"+
+                "UV: "+this.UV;
+}
 
 }

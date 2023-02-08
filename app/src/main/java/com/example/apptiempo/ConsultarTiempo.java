@@ -2,8 +2,11 @@ package com.example.apptiempo;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -21,13 +24,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import Modelos_clases.ModeloReporteDiario;
+import Modelos_clases.*;
 import okhttp3.*;
 
 public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCallback {
     private String IDmunicipio;
 
-    private static ModeloReporteDiario mr;
+    private static ModeloReporteGeneral mrGeneral;
     FirebaseAuth myAuth;
     FirebaseFirestore myStore;
     String municipio;
@@ -51,11 +54,7 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
         edittext = findViewById(R.id.editText_municipio);
         myStore = FirebaseFirestore.getInstance();
 
-        añadirTextViews();
-    }
 
-    private void añadirTextViews() {
-        tViews.add(findViewById(R.id.tv_municipio));
     }
 
 //    private void search_view() {
@@ -84,6 +83,7 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
 //    }
 
     public void hacerConsulta(View view) {
+
         municipio = Metodos.capitalize(edittext.getText().toString().trim());
         getIDMunicipio(municipio, new IDMunicipioCallback() {
             @Override
@@ -91,9 +91,13 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                 IDmunicipio = id;
                 //controlamos que no nos devuelva vacío.
                 if (IDmunicipio!=null) {
+                    mrGeneral = new ModeloReporteGeneral(municipio);
                     getEnlaceHttpok(IDmunicipio);
+                    System.out.println(mrGeneral);
                 } else {
-                    tViews.get(0).setText("No se encontró el municipio");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                    builder.setMessage("No se encontro el municipio").create().show();
+
                 }
             }
         });
@@ -115,6 +119,8 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
 
         requestTiempo(request1,"diario");
 
+
+
         Request request2 = new Request.Builder()
                 .url("https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/" + IDMunicipio)
                 .method("GET", null)
@@ -123,16 +129,17 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
 
         //Metemos la request en cola
 
-
+        System.out.println(mrGeneral);
     }
 
     private void requestTiempo(Request request, String tipo){
+
         //Instanciamos el cliente OkHttp
         OkHttpClient client = new OkHttpClient();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                tViews.get(0).setText("No se encontró el municipio");
+                System.out.println("No se encontraron datos");
             }
 
             //Si la respuesta devuelve
@@ -170,7 +177,7 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                     String jsonData = response.body().string();
                     try {
                         JSONArray jsonarr = new JSONArray(jsonData);
-
+//                        mrGeneral.setModelosHorarios(jsonarr);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -187,6 +194,7 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
     }
 
     private static void getTiempoDiario(String enlace) {
+
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -199,10 +207,11 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
+
                     String jsonData = response.body().string();
                     try {
                         JSONArray jsonarr = new JSONArray(jsonData);
-                        mr = new ModeloReporteDiario(jsonarr);
+                        mrGeneral.setModelosDiarios(jsonarr);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
