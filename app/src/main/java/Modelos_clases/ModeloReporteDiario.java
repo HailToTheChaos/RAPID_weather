@@ -4,25 +4,21 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 
-import com.google.gson.JsonObject;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+
 
 public class ModeloReporteDiario {
     private String temp_max;
     private String temp_min;
-    private int probPrec;
+    private String probPrec;
     private String estadoCielo;
     private String viento;
     private String sensacionTermicaMax;
     private String sensacionTermicaMin;
-    private int UV;
+    private String UV;
     private String fecha;
     private static LocalDateTime locaDate;
     private int hora;
@@ -44,17 +40,17 @@ public class ModeloReporteDiario {
             }
 
             //TEMP MAX
-            this.temp_max = jsonObjDiario.getJSONObject("temperatura").getString("maxima");
+            this.temp_max = jsonObjDiario.getJSONObject("temperatura").getString("maxima")+"º";
 
             /*(jobj.getJSONObject("prediccion").getJSONArray("dia").getJSONObject(0).
                     getJSONObject("temperatura").getString("maxima"));*/
 
             //TEMP MIN
-            this.temp_min = jsonObjDiario.getJSONObject("temperatura").getString("minima");
+            this.temp_min = jsonObjDiario.getJSONObject("temperatura").getString("minima")+"º";
 
 
             //PROB PRECIPITACION
-            this.probPrec = Integer.parseInt(jsonObjDiario.getJSONArray("probPrecipitacion").getJSONObject(0).getString("value"));
+            this.probPrec = jsonObjDiario.getJSONArray("probPrecipitacion").getJSONObject(0).getString("value")+" %";
 
             //Revisar
             JSONArray estadoAux = jsonObjDiario.getJSONArray("estadoCielo");

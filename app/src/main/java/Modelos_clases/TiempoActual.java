@@ -1,8 +1,6 @@
 package Modelos_clases;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.*;
 
 import java.time.LocalDateTime;
 
@@ -19,8 +17,10 @@ public class TiempoActual {
     //probabilidad en %
 
 
+    /**
+     * @param jObj
+     */
     public TiempoActual(JSONObject jObj) {
-
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             LocalDateTime locaDate = LocalDateTime.now();
             String horaStr = String.valueOf(locaDate.getHour());
@@ -33,8 +33,8 @@ public class TiempoActual {
         }
         try {
             this.temperatura = obtenerValor(jObj.getJSONArray("temperatura")) + "º";
-            this.estadoCielo = obtenerDescripcion(jObj.getJSONArray("estadoCielo"));
-            this.precipitacion = obtenerValor(jObj.getJSONArray("precipitacion")) + "mm";
+            this.estadoCielo = obtenerDescripcion(jObj.getJSONArray("estadoCielo")).toLowerCase();
+            this.precipitacion = obtenerValor(jObj.getJSONArray("precipitacion")) + " mm";
             this.sensTermica = obtenerValor(jObj.getJSONArray("sensTermica")) + "º";
             obtenerViento(jObj.getJSONArray("vientoAndRachaMax"));
 
@@ -80,8 +80,8 @@ public class TiempoActual {
             for (int i = 0; i < jArray.length(); i++) {
 
                 if (jArray.getJSONObject(i).getString("periodo").equals(this.hora)) {
-                    this.direcionViento = jArray.getJSONObject(i).getString("direccion");
-                    this.velocidadViento = jArray.getJSONObject(i).getString("velocidad") + "km/h";
+                    this.direcionViento = jArray.getJSONObject(i).getJSONArray("direccion").getString(0);
+                    this.velocidadViento = jArray.getJSONObject(i).getJSONArray("velocidad").getString(0) + " km/h";
                 }
             }
         } catch (JSONException e) {
@@ -115,5 +115,11 @@ public class TiempoActual {
 
     public String getDirecionViento() {
         return direcionViento;
+    }
+
+    @Override
+    public String toString() {
+        return "Precipitación: " + precipitacion + ". Sensación térmica: "
+                + sensTermica + ".\nVelocidad del viento: " + velocidadViento + " " + direcionViento;
     }
 }

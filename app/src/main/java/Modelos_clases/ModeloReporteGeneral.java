@@ -1,8 +1,6 @@
 package Modelos_clases;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.*;
 
 import java.util.ArrayList;
 
@@ -57,6 +55,10 @@ public class ModeloReporteGeneral {
     @Override
     public String toString(){
         return this.nombreMun + "\n"+ this.modelosHorarios + "\n" + this.modelosDiarios.toString();
+    }
+
+    public String getNombreMun() {
+        return nombreMun;
     }
 
     public TiempoActual getTiempoActual() {

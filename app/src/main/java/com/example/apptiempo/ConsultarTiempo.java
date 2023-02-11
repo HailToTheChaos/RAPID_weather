@@ -5,23 +5,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
+
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.*;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.*;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import org.json.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -31,12 +25,17 @@ import okhttp3.*;
 public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCallback {
     private String IDmunicipio;
 
+    private TextView tv_municipio;
+
     private static ModeloReporteGeneral mrGeneral;
     FirebaseAuth myAuth;
     FirebaseFirestore myStore;
     String municipio;
 
     EditText edittext;
+    ImageView estadoCielo;
+    TextView infoActual, temperaturaActual, tempMaxima, tempMinima, tiempoHorario, info_horario;
+
 
     ArrayList<TextView> tViews;
     OkHttpClient client;
@@ -53,6 +52,15 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
 
 //        search_view();
         edittext = findViewById(R.id.editText_municipio);
+        tv_municipio = findViewById(R.id.tv_municipio);
+        estadoCielo = findViewById(R.id.iv_estadoCielo);
+        infoActual = findViewById(R.id.tv_InfoActual);
+        temperaturaActual = findViewById(R.id.tv_temperatura);
+        tempMaxima = findViewById(R.id.tv_temp_max);
+        tempMinima = findViewById(R.id.tv_temp_min);
+        tiempoHorario = findViewById(R.id.tv_tiempoHorario);
+        info_horario = findViewById(R.id.info_tiempoHorario);
+
         myStore = FirebaseFirestore.getInstance();
 
 
@@ -91,10 +99,10 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
             public void onIDMunicipioRetrieved(String id) {
                 IDmunicipio = id;
                 //controlamos que no nos devuelva vacío.
-                if (IDmunicipio!=null) {
+                if (IDmunicipio != null) {
                     mrGeneral = new ModeloReporteGeneral(municipio);
                     getEnlaceHttpok(IDmunicipio);
-                    System.out.println(mrGeneral);
+
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ConsultarTiempo.this);
                     builder.setMessage("No se encontró el municipio").setNeutralButton("Salir", new DialogInterface.OnClickListener() {
@@ -106,8 +114,41 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
 
                 }
             }
- });
-}
+        });
+    }
+
+    private void mostrar() {
+        tv_municipio.setText(mrGeneral.getNombreMun());
+        infoActual.setText(mrGeneral.getTiempoActual().toString());
+
+
+            runOnUiThread(new Runnable() {
+                String estado;
+                int hora;
+                @Override
+                public void run() {
+                    estado = mrGeneral.getTiempoActual().getEstadoCielo();
+                    hora = Integer.parseInt(mrGeneral.getTiempoActual().getHora());
+                    temperaturaActual.setText(mrGeneral.getTiempoActual().getTemperatura());
+
+                    tempMaxima.setText(mrGeneral.getModelosDiarios().get(0).getTemp_max());
+                    tempMinima.setText(mrGeneral.getModelosDiarios().get(0).getTemp_min());
+                    info_horario.setVisibility(View.VISIBLE);
+                    tiempoHorario.setText(mrGeneral.getModelosHorarios().toString());
+                    if (estado.equals("despejado")) {
+                        if(hora >= 21){
+                            estadoCielo.setImageResource(R.mipmap.ic_luna_foreground);
+                        }else {
+                            estadoCielo.setImageResource(R.drawable.ic_despejado);
+                        }
+                    } else if (estado.contains("nuboso") || estado.contains("nubes")) {
+                        estadoCielo.setImageResource(R.drawable.ic_nubes);
+                    } else if(estado.contains("nieve")){
+                        estadoCielo.setImageResource(R.mipmap.ic_nieve_foreground);
+                    }
+                }
+            });
+    }
 
 
     /**
@@ -123,9 +164,7 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                 .addHeader("api_key", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYWltZWRlbGFmdWVudGUyNUBvdXRsb29rLmVzIiwianRpIjoiYjMyMTA3YTctNjAwZS00MTBiLTlkNWMtOTAxN2FkMWM2MTc0IiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2NzQ3NDQ1OTgsInVzZXJJZCI6ImIzMjEwN2E3LTYwMGUtNDEwYi05ZDVjLTkwMTdhZDFjNjE3NCIsInJvbGUiOiIifQ.51Y4dwn7sS7ePdcJEnfEUvdCIAcicDeA_pdIK6sfBbM")
                 .build();
 
-        requestTiempo(request1,"diario");
-
-
+        requestTiempo(request1, "diario");
 
         Request request2 = new Request.Builder()
                 .url("https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/" + IDMunicipio)
@@ -135,14 +174,15 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
 
         //Metemos la request en cola
 
-        requestTiempo(request2,"horario");
+        requestTiempo(request2, "horario");
         System.out.println(mrGeneral);
     }
 
-    private void requestTiempo(Request request, String tipo){
+    private void requestTiempo(Request request, String tipo) {
 
         //Instanciamos el cliente OkHttp
         OkHttpClient client = new OkHttpClient();
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -156,9 +196,9 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                 try {
                     JSONObject jsonobj = new JSONObject(jsonData);
                     String enlace = Metodos.getURL(jsonobj);
-                    if(tipo.equalsIgnoreCase("diario")) {
+                    if (tipo.equalsIgnoreCase("diario")) {
                         getTiempoDiario(enlace);
-                    } else if(tipo.equalsIgnoreCase("horario")){
+                    } else if (tipo.equalsIgnoreCase("horario")) {
                         getTiempoHorario(enlace);
                     }
                 } catch (JSONException e) {
@@ -187,6 +227,7 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                         mrGeneral.setModelosHorarios(jsonarr);
 
                         System.out.println(mrGeneral);
+                        mostrar();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -249,7 +290,7 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                         callback.onIDMunicipioRetrieved(idmunicipio.get(idmunicipio.size() - 1));
                     }
 
-                    public void onFailure(DocumentSnapshot documentSnapshot){
+                    public void onFailure(DocumentSnapshot documentSnapshot) {
 
                     }
                 });
