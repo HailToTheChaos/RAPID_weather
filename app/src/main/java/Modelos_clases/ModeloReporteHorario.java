@@ -26,7 +26,7 @@ public class ModeloReporteHorario {
         try {
             JSONArray arraux1 = jsonObjHorario.getJSONArray("estadoCielo");
             //ESTADO CIELO
-            for (int i = 0; i < arraux1.length(); i++) {
+            for (int i = 1; i < arraux1.length(); i++) {
                 this.estadoCielo.add(arraux1.getJSONObject(i).getString("descripcion"));
                 this.horasEstado.add(arraux1.getJSONObject(i).getString("periodo"));
             }
@@ -47,7 +47,7 @@ public class ModeloReporteHorario {
 
         String out = "";
 
-        for (int i = 0; i < estadoCielo.size()-1; i++) {
+        for (int i = 0; i < estadoCielo.size(); i++) {
             out += horasEstado.get(i) + ":00. " + estadoCielo.get(i) + ", " + temperatura.get(i) + "ºC " + "\n";
         }
 

@@ -80,7 +80,11 @@ public class TiempoActual {
             for (int i = 0; i < jArray.length(); i++) {
 
                 if (jArray.getJSONObject(i).getString("periodo").equals(this.hora)) {
-                    this.direcionViento = jArray.getJSONObject(i).getJSONArray("direccion").getString(0);
+                    try {
+                        this.direcionViento = jArray.getJSONObject(i).getJSONArray("direccion").getString(0);
+                    } catch(JSONException ex){
+                        this.direcionViento = "";
+                    }
                     this.velocidadViento = jArray.getJSONObject(i).getJSONArray("velocidad").getString(0) + " km/h";
                 }
             }

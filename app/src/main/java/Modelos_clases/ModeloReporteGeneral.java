@@ -24,7 +24,6 @@ public class ModeloReporteGeneral {
     }
 
     public void setModelosHorarios(JSONArray jsonArrayHorario) {
-
         try {
             JSONObject jObj = jsonArrayHorario.getJSONObject(0).getJSONObject("prediccion").getJSONArray("dia").getJSONObject(0);
             tiempoActual = new TiempoActual(jObj);
@@ -38,15 +37,23 @@ public class ModeloReporteGeneral {
         return modelosDiarios;
     }
 
+    public String obtenerTiempoModelosDiarios(){
+        String out = "";
+        for (int i = 0; i < this.modelosDiarios.size(); i++) {
+            out += modelosDiarios.get(i);
+        }
+        return out;
+    }
+
     public void setModelosDiarios(JSONArray jsonArrayDiario) {
         JSONArray jArr = null;
         try {
             jArr = jsonArrayDiario.getJSONObject(0).getJSONObject("prediccion").getJSONArray("dia");
-            for (int i = 1; i < jArr.length() ; i++){
+            for (int i = 0; i < jArr.length() ; i++){
                 modelosDiarios.add(new ModeloReporteDiario(jArr.getJSONObject(i)));
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error setModelosDiarios(general) "+ e);
         }
     }
 
