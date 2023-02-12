@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
 
 import org.json.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -107,7 +108,7 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                     mrGeneral = new ModeloReporteGeneral(municipio);
                     getEnlaceHttpok(IDmunicipio);
 
-                    while(mrGeneral.getModelosHorarios() == null){
+                    while (mrGeneral.getModelosHorarios() == null) {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
@@ -115,7 +116,7 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                         }
                     }
 
-                    while(mrGeneral.getModelosDiarios().size()==0){
+                    while (mrGeneral.getModelosDiarios().size() == 0) {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
@@ -144,39 +145,54 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
         infoActual.setText(mrGeneral.getTiempoActual().toString());
 
 
-                runOnUiThread(new Runnable() {
-                    String estado;
-                    int hora;
+        runOnUiThread(new Runnable() {
+            String estado;
+            int hora;
 
-                    @Override
-                    public void run() {
-                        sv_tiempo.setVisibility(View.VISIBLE);
-                        estado = mrGeneral.getTiempoActual().getEstadoCielo();
-                        System.out.println(estado);
-                        hora = Integer.parseInt(mrGeneral.getTiempoActual().getHora());
-                        temperaturaActual.setText(mrGeneral.getTiempoActual().getTemperatura());
+            @Override
+            public void run() {
+                sv_tiempo.setVisibility(View.VISIBLE);
+                estado = mrGeneral.getTiempoActual().getEstadoCielo();
+                System.out.println(estado);
+                hora = Integer.parseInt(mrGeneral.getTiempoActual().getHora());
+                temperaturaActual.setText(mrGeneral.getTiempoActual().getTemperatura());
 
-                        tempMaxima.setText(mrGeneral.getModelosDiarios().get(0).getTemp_max());
-                        tempMinima.setText(mrGeneral.getModelosDiarios().get(0).getTemp_min());
-                        info_horario.setVisibility(View.VISIBLE);
-                        tiempoHorario.setText(mrGeneral.getModelosHorarios().toString());
+                tempMaxima.setText(mrGeneral.getModelosDiarios().get(0).getTemp_max());
+                tempMinima.setText(mrGeneral.getModelosDiarios().get(0).getTemp_min());
+                info_horario.setVisibility(View.VISIBLE);
+                tiempoHorario.setText(mrGeneral.getModelosHorarios().toString());
 
-                        info_diario.setVisibility(View.VISIBLE);
-                        tiempoDiario.setText(mrGeneral.obtenerTiempoModelosDiarios());
-                        if (estado.equals("despejado")) {
-                            if (hora >= 20) {
-                                estadoCielo.setImageResource(R.mipmap.ic_luna_foreground);
-                            } else {
-                                estadoCielo.setImageResource(R.drawable.ic_despejado);
-                            }
-                        } else if (estado.contains("Nuboso") || estado.contains("nubes")|| estado.contains("cubierto")) {
+                info_diario.setVisibility(View.VISIBLE);
+                tiempoDiario.setText(mrGeneral.obtenerTiempoModelosDiarios());
+                System.out.println(hora);
+                if (hora <= 20) {
+                    if (estado.equals("despejado")) {
+                        estadoCielo.setImageResource(R.drawable.ic_despejado);
+                    } else if (estado.contains("nieve")) {
+                        estadoCielo.setImageResource(R.mipmap.ic_nieve_foreground);
+
+                    } else if (estado.contains("nuboso") || estado.contains("nubes")) {
+                        if (estado.equalsIgnoreCase("muy nuboso") || estado.equalsIgnoreCase("cubierto")) {
                             estadoCielo.setImageResource(R.drawable.ic_nubes);
-                        } else if (estado.contains("nieve")) {
-                            estadoCielo.setImageResource(R.mipmap.ic_nieve_foreground);
+                        } else {
+                            estadoCielo.setImageResource(R.drawable.ic_poco_nuboso);
                         }
                     }
-                });
 
+                } else {
+                    if (estado.equals("despejado")) {
+                        estadoCielo.setImageResource(R.drawable.ic_luna);
+                    } else if (estado.contains("nuboso") || estado.contains("nubes")) {
+                        if (estado.equalsIgnoreCase("muy nuboso") || estado.equalsIgnoreCase("cubierto")) {
+                            estadoCielo.setImageResource(R.drawable.ic_nubes);
+                        } else {
+                            estadoCielo.setImageResource(R.drawable.ic_poco_nuboso_noche);
+                        }
+                    }
+
+                }
+            }
+        });
     }
 
 
