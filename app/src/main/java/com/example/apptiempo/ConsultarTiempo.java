@@ -169,7 +169,7 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                     if (estado.equals("despejado")) {
                         estadoCielo.setImageResource(R.drawable.ic_despejado);
                     } else if (estado.contains("nieve")) {
-                        estadoCielo.setImageResource(R.mipmap.ic_nieve_foreground);
+                        estadoCielo.setImageResource(R.drawable.ic_nieve);
 
                     } else if (estado.contains("nuboso") || estado.contains("nubes")) {
                         if (estado.equalsIgnoreCase("muy nuboso") || estado.equalsIgnoreCase("cubierto")) {
@@ -182,6 +182,8 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                 } else {
                     if (estado.equals("despejado")) {
                         estadoCielo.setImageResource(R.drawable.ic_luna);
+                    } else if (estado.contains("nieve")) {
+                        estadoCielo.setImageResource(R.drawable.ic_nieve);
                     } else if (estado.contains("nuboso") || estado.contains("nubes")) {
                         if (estado.equalsIgnoreCase("muy nuboso") || estado.equalsIgnoreCase("cubierto")) {
                             estadoCielo.setImageResource(R.drawable.ic_nubes);
