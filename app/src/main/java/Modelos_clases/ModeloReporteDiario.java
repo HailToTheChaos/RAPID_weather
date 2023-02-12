@@ -37,13 +37,10 @@ public class ModeloReporteDiario {
 
 
             //TEMP MAX
-            this.temp_max = jsonObjDiario.getJSONObject("temperatura").getString("maxima") + "º";
-
-            /*(jobj.getJSONObject("prediccion").getJSONArray("dia").getJSONObject(0).
-                    getJSONObject("temperatura").getString("maxima"));*/
+            this.temp_max = jsonObjDiario.getJSONObject("temperatura").getString("maxima") + "º C";
 
             //TEMP MIN
-            this.temp_min = jsonObjDiario.getJSONObject("temperatura").getString("minima") + "º";
+            this.temp_min = jsonObjDiario.getJSONObject("temperatura").getString("minima") + "º C";
 
 
             //PROB PRECIPITACION
@@ -63,10 +60,10 @@ public class ModeloReporteDiario {
             this.viento = jsonObjDiario.getJSONArray("viento").getJSONObject(0).getString("velocidad");
 
             //SENSACION TÉRMICA MAX
-            this.sensacionTermicaMax = jsonObjDiario.getJSONObject("sensTermica").getString("maxima");
+            this.sensacionTermicaMax = jsonObjDiario.getJSONObject("sensTermica").getString("maxima") + "º C";
 
             //SENSACION TÉRMICA MIN
-            this.sensacionTermicaMin = jsonObjDiario.getJSONObject("sensTermica").getString("minima");
+            this.sensacionTermicaMin = jsonObjDiario.getJSONObject("sensTermica").getString("minima") + "º C";
 
 
             //FECHA
@@ -122,11 +119,11 @@ public class ModeloReporteDiario {
         }
 
         return fecha + "\n\nMAX: " + this.temp_max +
-                " MIN: " + this.temp_min +
-                " Precipitacion: " + this.probPrec +
-                " Estado del cielo: " + this.estadoCielo +
-                " Viento: " + this.viento + " km/h" +
-                " Sensación térmica: " + this.sensacionTermicaMin + "ºC " + this.sensacionTermicaMax + "ºC\n\n";
+                " MIN: " + this.temp_min + "\n" +
+                "Probabilidad de Precipitacion: " + this.probPrec + "\n" +
+                "Estado del cielo: " + this.estadoCielo + "\n" +
+                "Viento: " + this.viento + " km/h" + "\n" +
+                "Sensación térmica: " + this.sensacionTermicaMax + " " + this.sensacionTermicaMin + "\n\n";
     }
 
 }

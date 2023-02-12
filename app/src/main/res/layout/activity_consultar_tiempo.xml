@@ -157,6 +157,7 @@
                 android:id="@+id/info_tiempo_diario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="Tiempo diario"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:visibility="invisible" />
@@ -165,6 +166,7 @@
                 android:id="@+id/tv_tiempoDiario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -172,6 +174,7 @@
                 android:id="@+id/info_tiempoHorario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="1dp"
                 android:text="Tiempo horario"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -181,6 +184,7 @@
                 android:id="@+id/tv_tiempoHorario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         </LinearLayout>
