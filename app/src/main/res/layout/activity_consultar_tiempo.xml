@@ -60,17 +60,15 @@
     <ImageView
         android:id="@+id/iv_estadoCielo"
         android:layout_width="69dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="15dp"
+        android:layout_height="0dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="46dp"
         android:layout_marginBottom="52dp"
+        android:contentDescription="@string/icono_del_estado_del_cielo"
         app:layout_constraintBottom_toTopOf="@+id/tv_InfoActual"
         app:layout_constraintEnd_toStartOf="@+id/tv_temp_max"
         app:layout_constraintStart_toEndOf="@+id/tv_temperatura"
         app:layout_constraintTop_toBottomOf="@+id/tv_municipio"
-        tools:srcCompat="@tools:sample/avatars"
-        android:contentDescription="@string/icono_del_estado_del_cielo" />
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tv_InfoActual"

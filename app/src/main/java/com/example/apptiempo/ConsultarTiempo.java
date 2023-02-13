@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -41,18 +42,14 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
 
     ArrayList<TextView> tViews;
     OkHttpClient client;
-//    SearchView buscador;
-//    Query query;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consultar_tiempo);
 
-//        buscador = findViewById(R.id.busquedaMunicipio);
 
-
-//        search_view();
         edittext = findViewById(R.id.editText_municipio);
         tv_municipio = findViewById(R.id.tv_municipio);
         estadoCielo = findViewById(R.id.iv_estadoCielo);
@@ -70,31 +67,6 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
 
 
     }
-
-//    private void search_view() {
-//        buscador.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                textSearch(query);
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                return false;
-//            }
-//        });
-//    }
-
-//    private void textSearch(String entrada){
-//        Query query = myStore.collection("municipiosEspaña")
-//                .orderBy("name").startAt(entrada).endAt(entrada+"~");
-//
-//        FirestoreRecyclerOptions<Municipio> firestoreRecyclerOptions =
-//                new FirestoreRecyclerOptions.Builder<Municipio>()
-//                        .setQuery(query,Municipio.class).build();
-//
-//    }
 
     public void hacerConsulta(View view) {
 
@@ -164,15 +136,16 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
 
                 info_diario.setVisibility(View.VISIBLE);
                 tiempoDiario.setText(mrGeneral.obtenerTiempoModelosDiarios());
-                System.out.println(hora);
+
                 if (hora <= 20) {
                     if (estado.equals("despejado")) {
                         estadoCielo.setImageResource(R.drawable.ic_despejado);
                     } else if (estado.contains("nieve")) {
                         estadoCielo.setImageResource(R.drawable.ic_nieve);
-
+                    } else if (estado.contains("cubierto")) {
+                        estadoCielo.setImageResource(R.drawable.ic_nubes);
                     } else if (estado.contains("nuboso") || estado.contains("nubes")) {
-                        if (estado.equalsIgnoreCase("muy nuboso") || estado.equalsIgnoreCase("cubierto")) {
+                        if (estado.equalsIgnoreCase("muy nuboso")) {
                             estadoCielo.setImageResource(R.drawable.ic_nubes);
                         } else {
                             estadoCielo.setImageResource(R.drawable.ic_poco_nuboso);
@@ -184,8 +157,10 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                         estadoCielo.setImageResource(R.drawable.ic_luna);
                     } else if (estado.contains("nieve")) {
                         estadoCielo.setImageResource(R.drawable.ic_nieve);
+                    }else if (estado.equalsIgnoreCase("cubierto")) {
+                        estadoCielo.setImageResource(R.drawable.ic_nubes);
                     } else if (estado.contains("nuboso") || estado.contains("nubes")) {
-                        if (estado.equalsIgnoreCase("muy nuboso") || estado.equalsIgnoreCase("cubierto")) {
+                        if (estado.equalsIgnoreCase("muy nuboso")) {
                             estadoCielo.setImageResource(R.drawable.ic_nubes);
                         } else {
                             estadoCielo.setImageResource(R.drawable.ic_poco_nuboso_noche);
