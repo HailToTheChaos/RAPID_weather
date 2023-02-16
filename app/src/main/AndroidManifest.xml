@@ -19,12 +19,15 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".HelpPassword"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".RegistroActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".loginActivity"
@@ -41,7 +44,7 @@
         </activity>
         <activity
             android:name=".ConsultarTiempo"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"

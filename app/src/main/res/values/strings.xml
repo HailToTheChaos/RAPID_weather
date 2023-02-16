@@ -22,4 +22,9 @@
     <string name="recuerdame">Recuerdame</string>
     <string name="app_icon">App Icon</string>
     <string name="icono_del_estado_del_cielo">Icono del estado del cielo</string>
+    <string name="recuperar">Recuperar</string>
+    <string name="texto_recuperacion">Por favor, escriba su correo electrónico para que le podamos enviar el enlace de recuperación de la contraseña.</string>
+    <string name="txt_volver_al_inicio">Volver al inicio de sesión</string>
+    <string name="tiempo_diario">Tiempo diario</string>
+    <string name="tiempo_horario">Tiempo horario</string>
 </resources>

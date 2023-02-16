@@ -35,7 +35,7 @@ public class TiempoActual {
             this.temperatura = obtenerValor(jObj.getJSONArray("temperatura")) + "º";
             this.estadoCielo = obtenerDescripcion(jObj.getJSONArray("estadoCielo")).toLowerCase();
             this.precipitacion = obtenerValor(jObj.getJSONArray("precipitacion")) + " mm";
-            this.sensTermica = obtenerValor(jObj.getJSONArray("sensTermica")) + "º";
+            this.sensTermica = obtenerValor(jObj.getJSONArray("sensTermica")) + "º C";
             obtenerViento(jObj.getJSONArray("vientoAndRachaMax"));
 
 

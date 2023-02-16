@@ -63,13 +63,13 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
         info_diario = findViewById(R.id.info_tiempo_diario);
         sv_tiempo = findViewById(R.id.sv_infoTiempo);
 
+
         myStore = FirebaseFirestore.getInstance();
 
 
     }
 
     public void hacerConsulta(View view) {
-
         municipio = Metodos.capitalize(edittext.getText().toString().trim());
         getIDMunicipio(municipio, new IDMunicipioCallback() {
             @Override
@@ -116,7 +116,6 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
         tv_municipio.setText(mrGeneral.getNombreMun());
         infoActual.setText(mrGeneral.getTiempoActual().toString());
 
-
         runOnUiThread(new Runnable() {
             String estado;
             int hora;
@@ -125,8 +124,9 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
             public void run() {
                 sv_tiempo.setVisibility(View.VISIBLE);
                 estado = mrGeneral.getTiempoActual().getEstadoCielo();
-                System.out.println(estado);
+
                 hora = Integer.parseInt(mrGeneral.getTiempoActual().getHora());
+                System.out.println(mrGeneral.getTiempoActual().getTemperatura());
                 temperaturaActual.setText(mrGeneral.getTiempoActual().getTemperatura());
 
                 tempMaxima.setText(mrGeneral.getModelosDiarios().get(0).getTemp_max());

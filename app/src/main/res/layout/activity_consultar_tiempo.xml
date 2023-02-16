@@ -26,6 +26,7 @@
         android:layout_height="47dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="35dp"
+        android:backgroundTint="#072FF6"
         android:onClick="hacerConsulta"
         android:text="@string/consultar"
         android:textColor="@color/white"
@@ -61,7 +62,9 @@
         android:id="@+id/iv_estadoCielo"
         android:layout_width="69dp"
         android:layout_height="0dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="52dp"
         android:contentDescription="@string/icono_del_estado_del_cielo"
         app:layout_constraintBottom_toTopOf="@+id/tv_InfoActual"
@@ -86,7 +89,7 @@
         android:id="@+id/tv_temperatura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="130dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="65dp"
@@ -105,10 +108,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="41dp"
+        android:layout_marginEnd="146dp"
         android:layout_marginBottom="4dp"
         android:minWidth="30dp"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_temp_min"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_estadoCielo"
         app:layout_constraintTop_toBottomOf="@+id/tv_municipio" />
 
@@ -156,7 +161,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="Tiempo diario"
+                android:text="@string/tiempo_diario"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:visibility="invisible" />
 
@@ -174,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="1dp"
-                android:text="Tiempo horario"
+                android:text="@string/tiempo_horario"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:visibility="invisible" />
 
