@@ -8,9 +8,7 @@ import org.json.JSONObject;
 public class Metodos {
 
     public static String getURL(JSONObject jsonobj) {
-
         String enlace = "";
-
         try {
             enlace = jsonobj.getString("datos");
 
@@ -20,10 +18,15 @@ public class Metodos {
         return enlace;
     }
 
-    public static String capitalize(String in){
-        String aux= in.toUpperCase();
-        return aux.charAt(0)+in.substring(1);
-}
+    /**
+     * Método que capitaliza un String
+     * @param in (entrada)
+     * @return String capitalizado
+     */
+    public static String capitalize(String in) {
+        String aux = in.toUpperCase();
+        return aux.charAt(0) + in.substring(1);
+    }
 }
 
 

@@ -200,6 +200,11 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
 
     }
 
+    /**
+     * Método que hace la request inicial a AEMET para conseguir el enlace que contiene el JSON del tiempo
+     * @param request (cogemos la request ya preparada)
+     * @param tipo (Si es diaria o horaria)
+     */
     private void requestTiempo(Request request, String tipo) {
 
         //Instanciamos el cliente OkHttp
@@ -230,6 +235,10 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
         });
     }
 
+    /**
+     * Método para obtener el tiempo por horas
+     * @param enlace
+     */
     private void getTiempoHorario(String enlace) {
         OkHttpClient client = new OkHttpClient();
 
@@ -262,8 +271,11 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
         });
     }
 
+    /**
+     * Método para obtener el tiempo por días
+     * @param enlace
+     */
     private static void getTiempoDiario(String enlace) {
-
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -296,9 +308,12 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
         });
     }
 
+    /**
+     * Método para obtener el ID del municipio de Firebase
+     * @param municipio_nombre
+     * @param callback
+     */
     public void getIDMunicipio(String municipio_nombre, IDMunicipioCallback callback) {
-
-
         ArrayList<String> idmunicipio = new ArrayList<>();
         myStore.collection("municipiosEspaña").document(municipio_nombre)
                 .get()

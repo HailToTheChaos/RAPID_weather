@@ -16,13 +16,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 
 public class RegistroActivity extends AppCompatActivity {
-    EditText intro_nombre, intro_mail, intro_pwd, intro_pwd_conf;
-    Button boton_registro;
-    TextView link_volver;
-    ProgressBar progressBar;
+    private EditText intro_nombre, intro_mail, intro_pwd, intro_pwd_conf;
+    private Button boton_registro;
+    private TextView link_volver;
+    private ProgressBar progressBar;
+    private final String patronContraseña = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,20}$";
 
-    FirebaseAuth myAuth;
-    FirebaseFirestore myStore;
+    private FirebaseAuth myAuth;
+    private FirebaseFirestore myStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,13 +103,17 @@ public class RegistroActivity extends AppCompatActivity {
             return false;
         }
 
+        if (password.length() < 6 || password.length() > 20) {
+            intro_pwd.setError("Es necesario que la contraseña tenga de 6 a 20 caracteres");
+            return false;
+        }
+
         if (!password.equals(password_conf)) {
             intro_pwd_conf.setError("La contraseña no coincide");
             return false;
         }
-
-        if (!email.matches(getString(R.string.match_correo))) {
-            intro_mail.setError("Correo no valido");
+        if(!password.matches(patronContraseña)){
+            intro_pwd.setError("La contraseña debe contener por lo menos un dígito y un caracter en mayuscula");
             return false;
         }
         return true;

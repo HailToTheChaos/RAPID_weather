@@ -21,11 +21,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class loginActivity extends AppCompatActivity {
-    EditText intro_mail, intro_pwd;
-    Button boton_acceso;
-    TextView link_registro;
-    ProgressBar progressBar;
-    Switch interruptor;
+    private EditText intro_mail, intro_pwd;
+    private Button boton_acceso;
+    private TextView link_registro;
+    private ProgressBar progressBar;
+    private Switch interruptor;
     public static final String SHARED_PREFS ="sharedPrefs";
 
     FirebaseAuth myAuth;
@@ -87,9 +87,8 @@ public class loginActivity extends AppCompatActivity {
                             finish();
                         }
                     } else {
-                        intro_mail.setError("Email y contraseña no válidos");
                         //Para debugging
-                        Toast.makeText(loginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(loginActivity.this, "Email o contraseña no válidos", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.INVISIBLE);
                     }
                 }
@@ -98,7 +97,6 @@ public class loginActivity extends AppCompatActivity {
     }
 
     private boolean validar(String email, String password) {
-
         if (email.isEmpty()) {
             intro_mail.setError("Es necesario que introduzca el email");
             return false;
@@ -114,10 +112,11 @@ public class loginActivity extends AppCompatActivity {
             return false;
         }
 
-        if (password.length() < 6) {
-            intro_pwd.setError("Es necesario que la contraseña tenga 6 o más carácteres");
+        if (password.length() < 6 || password.length() > 20) {
+            intro_pwd.setError("Es necesario que la contraseña tenga de 6 a 20 caracteres");
             return false;
         }
+
         return true;
     }
 

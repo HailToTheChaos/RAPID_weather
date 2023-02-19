@@ -1,5 +1,9 @@
 package Modelos_clases;
 
+import androidx.annotation.NonNull;
+
+import com.example.apptiempo.Metodos;
+
 import org.json.*;
 
 import java.time.LocalDateTime;
@@ -18,7 +22,8 @@ public class TiempoActual {
 
 
     /**
-     * @param jObj
+     * Contructor del objeto tiempo actual
+     * @param jObj (JsonObject de la consulta a la API)
      */
     public TiempoActual(JSONObject jObj) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -49,7 +54,6 @@ public class TiempoActual {
         String valor = "";
         try {
             for (int i = 0; i < jArray.length(); i++) {
-
                 if (jArray.getJSONObject(i).getString("periodo").equals(this.hora)) {
                     valor = jArray.getJSONObject(i).getString("value");
                 }
@@ -82,7 +86,7 @@ public class TiempoActual {
                 if (jArray.getJSONObject(i).getString("periodo").equals(this.hora)) {
                     try {
                         this.direcionViento = jArray.getJSONObject(i).getJSONArray("direccion").getString(0);
-                    } catch(JSONException ex){
+                    } catch (JSONException ex) {
                         this.direcionViento = "";
                     }
                     this.velocidadViento = jArray.getJSONObject(i).getJSONArray("velocidad").getString(0) + " km/h";
@@ -121,9 +125,11 @@ public class TiempoActual {
         return direcionViento;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return "Precipitación: " + precipitacion + ". Sensación térmica: "
+        return Metodos.capitalize(estadoCielo) + "\n" +
+                "Precipitación: " + precipitacion + ". Sensación térmica: "
                 + sensTermica + ".\nVelocidad del viento: " + velocidadViento + " " + direcionViento;
     }
 }
