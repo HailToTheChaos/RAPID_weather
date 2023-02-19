@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                bienvenida.setText("Bienvenido a tu sesión " + value.getString("Nombre") + "\n¿que desea realizar?");
+                bienvenida.setText("Bienvenido a tu sesión " + value.getString("Nombre") + "\n¿Qué desea realizar?");
             }
         });
     }

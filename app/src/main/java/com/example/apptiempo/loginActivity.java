@@ -57,7 +57,6 @@ public class loginActivity extends AppCompatActivity {
         }
     }
 
-
     public void mandarRegistro(View view) {
         Intent intent = new Intent(getApplicationContext(), RegistroActivity.class);
         startActivity(intent);

@@ -32,17 +32,17 @@ public class HelpPassword extends AppCompatActivity {
     }
 
     public void volverLogin(View view) {
-        Intent intent = new Intent(getApplicationContext(),loginActivity.class);
+        Intent intent = new Intent(getApplicationContext(), loginActivity.class);
         startActivity(intent);
     }
 
-    private void getEnviarCorreo(){
+    private void getEnviarCorreo() {
         auth.setLanguageCode("es");
         auth.sendPasswordResetEmail(correo).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(getApplicationContext(),"Por favor revise su correo para restaurar su contraseña",Toast.LENGTH_LONG).show();
+                if (task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Por favor revise su correo para restaurar su contraseña", Toast.LENGTH_LONG).show();
 
                     finish();
                 }
@@ -50,13 +50,13 @@ public class HelpPassword extends AppCompatActivity {
         });
     }
 
-    private boolean validar_correo(@NonNull String mail){
-        if(!mail.matches(getString(R.string.match_correo))){
+    private boolean validar_correo(@NonNull String mail) {
+        if (!mail.matches(getString(R.string.match_correo))) {
             gmail.setError("Por favor, introduzca un formato correcto de correo.");
             return false;
         }
 
-        if(mail.isEmpty()){
+        if (mail.isEmpty()) {
             gmail.setError("No puede dejar este apartado en blanco");
             return false;
         }
@@ -68,12 +68,12 @@ public class HelpPassword extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 correo = gmail.getText().toString().trim();
-                if(validar_correo(correo) == true){
+                if (validar_correo(correo) == true) {
                     getEnviarCorreo();
-                }else{
-                    Toast.makeText(getApplicationContext(),"Error, el correo no se pudo enviar",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error, el correo no se pudo enviar", Toast.LENGTH_LONG).show();
                 }
             }
-  });
-}
+        });
+    }
 }
