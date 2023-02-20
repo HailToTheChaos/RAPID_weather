@@ -32,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.config_item:
+                Intent i = new Intent(getApplicationContext(),Configuracion.class);
+                startActivity(i);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -71,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), ConsultarTiempo.class);
         startActivity(intent);
     }
-
 
     public void cerrar_sesion(View view) {
         SharedPreferences sharedprefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
