@@ -40,13 +40,10 @@ public class SetPassword extends AppCompatActivity {
         setContentView(R.layout.activity_set_password);
         contrasenya = findViewById(R.id.editText_contrasenya_nueva_setpassword);
         confirm_contrasenya = findViewById(R.id.editText_rep_contrasenya_setpassword);
-        pass1 = contrasenya.getText().toString();
-        conf_pass = confirm_contrasenya.getText().toString();
         myauth = FirebaseAuth.getInstance();
         idUsuario = myauth.getCurrentUser().getUid();
         myStore = FirebaseFirestore.getInstance();
         editText_contarsenya_propia = findViewById(R.id.editText_contarsenya_propia);
-        contrasenya_prop = editText_contarsenya_propia.getText().toString();
         DocumentReference docRef = myStore.collection("usuarios").document(idUsuario);
         docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
@@ -57,7 +54,11 @@ public class SetPassword extends AppCompatActivity {
     }
 
     public void aceptar(View view) {
-        if(comprobar_email()==true){
+        contrasenya_prop = editText_contarsenya_propia.getText().toString();
+        pass1 = contrasenya.getText().toString();
+        conf_pass = confirm_contrasenya.getText().toString();
+
+        if(comprobar_email(contrasenya_prop, pass1, conf_pass)){
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             AuthCredential credential = EmailAuthProvider.getCredential(correo,contrasenya_prop);
 
@@ -82,17 +83,16 @@ public class SetPassword extends AppCompatActivity {
         }
     }
 
-    private boolean comprobar_email(){
-
-        if(contrasenya_prop.isBlank()){
+    private boolean comprobar_email(String contrasenya_prop, String pass1, String conf_pass){
+        if(contrasenya_prop.isEmpty()){
             editText_contarsenya_propia.setError("No puede dejar este campo vacío.");
             return false;
         }
-        if(pass1.isBlank()){
+        if(pass1.isEmpty()){
             contrasenya.setError("No puede dejar este campo vacío.");
             return false;
         }
-        if(conf_pass.isBlank()){
+        if(conf_pass.isEmpty()){
             confirm_contrasenya.setError("No puede dejar este campo vacío.");
             return false;
         }
