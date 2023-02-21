@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,6 +24,8 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.Objects;
+
 public class SetPassword extends AppCompatActivity {
     private String correo;
     private String contrasenya_prop;
@@ -35,22 +40,29 @@ public class SetPassword extends AppCompatActivity {
 
 
     @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_password);
         contrasenya = findViewById(R.id.editText_contrasenya_nueva_setpassword);
         confirm_contrasenya = findViewById(R.id.editText_rep_contrasenya_setpassword);
         myauth = FirebaseAuth.getInstance();
-        idUsuario = myauth.getCurrentUser().getUid();
+        idUsuario = Objects.requireNonNull(myauth.getCurrentUser()).getUid();
         myStore = FirebaseFirestore.getInstance();
         editText_contarsenya_propia = findViewById(R.id.editText_contarsenya_propia);
         DocumentReference docRef = myStore.collection("usuarios").document(idUsuario);
         docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                assert value != null;
                 correo = value.getString("Email");
             }
         });
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
     public void aceptar(View view) {
@@ -62,6 +74,7 @@ public class SetPassword extends AppCompatActivity {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             AuthCredential credential = EmailAuthProvider.getCredential(correo,contrasenya_prop);
 
+            assert user != null;
             user.reauthenticate(credential)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -71,7 +84,7 @@ public class SetPassword extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            Toast.makeText(SetPassword.this, "Contraseña cambiada correctamente", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SetPassword.this, "Contraseña actualizada correctamente", Toast.LENGTH_SHORT).show();
                                         } else {
                                             Toast.makeText(SetPassword.this, "No se pudo cambiar la contraseña.", Toast.LENGTH_SHORT).show();
                                         }

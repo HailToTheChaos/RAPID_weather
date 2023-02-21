@@ -14,6 +14,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class RegistroActivity extends AppCompatActivity {
     private EditText intro_nombre, intro_mail, intro_pwd, intro_pwd_conf;
@@ -29,6 +30,7 @@ public class RegistroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         intro_nombre = findViewById(R.id.editText_nombre);
         intro_mail = findViewById(R.id.email_registro);

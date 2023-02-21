@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 
@@ -20,6 +22,7 @@ import org.json.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import Modelos_clases.*;
 import okhttp3.*;
@@ -43,6 +46,28 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
     ArrayList<TextView> tViews;
     OkHttpClient client;
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.config_item:
+                Intent i = new Intent(getApplicationContext(),Configuracion.class);
+                startActivity(i);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +90,7 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
 
 
         myStore = FirebaseFirestore.getInstance();
-
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
     }
 

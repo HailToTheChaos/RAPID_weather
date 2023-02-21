@@ -20,6 +20,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 public class loginActivity extends AppCompatActivity {
     private EditText intro_mail, intro_pwd;
     private Button boton_acceso;
@@ -34,7 +36,7 @@ public class loginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        Objects.requireNonNull(getSupportActionBar()).hide();
         intro_mail = findViewById(R.id.email_login);
         intro_pwd = findViewById(R.id.password_login);
         boton_acceso = findViewById(R.id.boton_acceso);
@@ -72,7 +74,7 @@ public class loginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        if(isEmailVerificado(myAuth.getCurrentUser())) {
+                        if(isEmailVerificado(Objects.requireNonNull(myAuth.getCurrentUser()))) {
                             if(interruptor.isChecked()){
                                 SharedPreferences sharedprefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                                 SharedPreferences.Editor edit = sharedprefs.edit();

@@ -25,7 +25,7 @@ public class Metodos {
      */
     public static String capitalize(String in) {
         String aux = in.toUpperCase();
-        return aux.charAt(0) + in.substring(1);
+        return aux.charAt(0) + in.substring(1).toLowerCase();
     }
 }
 
