@@ -1,18 +1,30 @@
 package com.example.apptiempo;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import org.w3c.dom.ls.LSOutput;
 
 import java.util.Objects;
 
@@ -52,5 +64,52 @@ public class Configuracion extends AppCompatActivity {
     public void cambiar_contrasenya(View view) {
         Intent intent = new Intent(getApplicationContext(),SetPassword.class);
         startActivity(intent);
+    }
+
+    public void eliminar_cuenta(View view) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Configuracion.this);
+        alertDialog.setMessage("¿Desea eliminar la cuenta?");
+        alertDialog.setTitle("Eliminar cuenta");
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton("Sí", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int which)
+            {
+                myStore.collection("usuarios").document(idUsuario)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getApplicationContext(), "No se pudo eliminar la cuenta.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                user.delete()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Intent i = new Intent(getApplicationContext(),loginActivity.class);
+                                    startActivity(i);
+                                    Toast.makeText(getApplicationContext(), "Cuenta eliminada.", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        });
+            }
+        });
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int which)
+            {
+
+            }
+        });
+        alertDialog.show();
     }
 }
