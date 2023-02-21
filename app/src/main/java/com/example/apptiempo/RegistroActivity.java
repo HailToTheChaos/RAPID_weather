@@ -65,7 +65,6 @@ public class RegistroActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     //Si no ha habido problemas (la tarea de registrar el usuario ha sido exitosa: Feedback y redireccion a la MainActivity
                     if (task.isSuccessful()) {
-                        Toast.makeText(RegistroActivity.this, "Usuario registrado correctamente.", Toast.LENGTH_SHORT).show();
                         String idUsuario = myAuth.getCurrentUser().getUid();
                         DocumentReference docRef = myStore.collection("usuarios").document(idUsuario);
 
@@ -77,11 +76,12 @@ public class RegistroActivity extends AppCompatActivity {
 
                         sendVerificationEmail();
                         Intent intent = new Intent(getApplicationContext(), loginActivity.class);
+                        Toast.makeText(RegistroActivity.this, "Usuario registrado correctamente.", Toast.LENGTH_SHORT).show();
                         startActivity(intent);
                         progressBar.setVisibility(View.INVISIBLE);
                     } else {
-                        //Toast.makeText(Register.this,"Se ha producido une error en el proceso de registro.", Toast.LENGTH_SHORT ).show();
-                        Toast.makeText(RegistroActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegistroActivity.this,"Se ha producido une error en el proceso de registro.", Toast.LENGTH_SHORT ).show();
+                        //Toast.makeText(RegistroActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.INVISIBLE);
                     }
                 }
