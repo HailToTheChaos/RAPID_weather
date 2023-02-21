@@ -5,15 +5,13 @@ import org.json.*;
 import java.util.ArrayList;
 
 public class ModeloReporteGeneral {
-
     private TiempoActual tiempoActual;
     private String nombreMun;
     private ModeloReporteHorario modelosHorarios; //Serian 24, pero dependiendo de la hora de la consulta son menos
     ArrayList<ModeloReporteDiario> modelosDiarios; //Serian por 10 dias
 
 
-    public ModeloReporteGeneral(String nombreMunicipio) {
-        this.nombreMun = nombreMunicipio;
+    public ModeloReporteGeneral() {
         modelosDiarios = new ArrayList();
     }
 
@@ -25,6 +23,7 @@ public class ModeloReporteGeneral {
 
     public void setModelosHorarios(JSONArray jsonArrayHorario) {
         try {
+            this.nombreMun = jsonArrayHorario.getJSONObject(0).getString("nombre");
             JSONObject jObj = jsonArrayHorario.getJSONObject(0).getJSONObject("prediccion").getJSONArray("dia").getJSONObject(0);
             tiempoActual = new TiempoActual(jObj);
             modelosHorarios = new ModeloReporteHorario(jObj);

@@ -97,14 +97,14 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
     }
 
     public void hacerConsulta(View view) {
-        municipio = Metodos.capitalize(edittext.getText().toString().trim());
+        municipio = edittext.getText().toString().trim().toLowerCase();
         getIDMunicipio(municipio, new IDMunicipioCallback() {
             @Override
             public void onIDMunicipioRetrieved(String id) {
                 IDmunicipio = id;
                 //controlamos que no nos devuelva vacío.
                 if (IDmunicipio != null) {
-                    mrGeneral = new ModeloReporteGeneral(municipio);
+                    mrGeneral = new ModeloReporteGeneral();
                     getEnlaceHttpok(IDmunicipio);
 
                     while (mrGeneral.getModelosHorarios() == null) {
