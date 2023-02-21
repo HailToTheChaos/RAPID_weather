@@ -1,6 +1,8 @@
 package com.example.apptiempo;
 
 
+import static com.example.apptiempo.Metodos.mostrarAlerta;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -124,14 +126,7 @@ public class ConsultarTiempo extends AppCompatActivity implements IDMunicipioCal
                     mostrar();
 
                 } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(ConsultarTiempo.this);
-                    builder.setMessage("No se encontró el municipio").setNeutralButton("Salir", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();//con esto se sale
-                        }
-                    }).create().show();
-
+                    mostrarAlerta("No se encontró el municipio",ConsultarTiempo.this);
                 }
             }
         });

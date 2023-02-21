@@ -27,4 +27,6 @@
     <string name="txt_volver_al_inicio">Volver al inicio de sesión</string>
     <string name="tiempo_diario">Tiempo diario</string>
     <string name="tiempo_horario">Tiempo horario</string>
+    <string name="introduzca_su_contrase_a_actual">Introduzca su contraseña actual</string>
+    <string name="introduzca_su_nueva_contrase_a">Introduzca su nueva contraseña</string>
 </resources>

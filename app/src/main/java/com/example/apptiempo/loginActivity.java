@@ -1,8 +1,8 @@
 package com.example.apptiempo;
 
+import static com.example.apptiempo.Metodos.mostrarAlerta;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -89,7 +89,7 @@ public class loginActivity extends AppCompatActivity {
                         }
                     } else {
                         //Para debugging
-                        Toast.makeText(loginActivity.this, "Email o contraseña no válidos", Toast.LENGTH_SHORT).show();
+                        mostrarAlerta("Email o correo no válido", loginActivity.this);
                         progressBar.setVisibility(View.INVISIBLE);
                     }
                 }
@@ -126,7 +126,7 @@ public class loginActivity extends AppCompatActivity {
             return true;
         } else {
             progressBar.setVisibility(View.INVISIBLE);
-            Toast.makeText(this, "Debe de verificar el correo a través del enlace que le hemos enviado.", Toast.LENGTH_SHORT).show();
+            mostrarAlerta("Debe de verificar el correo a través del enlace que le hemos enviado.",loginActivity.this);
             return false;
         }
     }
@@ -135,5 +135,4 @@ public class loginActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), HelpPassword.class);
         startActivity(intent);
     }
-
 }

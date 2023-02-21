@@ -14,6 +14,8 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.Objects;
+
 public class Configuracion extends AppCompatActivity {
 
     private FirebaseAuth myauth;
@@ -22,7 +24,11 @@ public class Configuracion extends AppCompatActivity {
     private TextView nombre;
     private TextView correo;
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +46,7 @@ public class Configuracion extends AppCompatActivity {
                 correo.setText(value.getString("Email"));
             }
         });
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
     public void cambiar_contrasenya(View view) {
