@@ -32,11 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.config_item:
-                Intent i = new Intent(getApplicationContext(),Configuracion.class);
-                startActivity(i);
-                break;
+        if (item.getItemId() == R.id.config_item) {
+            Intent i = new Intent(getApplicationContext(), Configuracion.class);
+            startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -56,12 +54,6 @@ public class MainActivity extends AppCompatActivity {
         myStore = FirebaseFirestore.getInstance();
         bienvenida = findViewById(R.id.textView_bienvenida);
         DocumentReference docRef = myStore.collection("usuarios").document(idUsuario);
-        docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                bienvenida.setText("Bienvenido a tu sesión " + value.getString("Nombre") + "\n¿Qué desea realizar?");
-            }
-        });
 
     }
 

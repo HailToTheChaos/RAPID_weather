@@ -34,4 +34,7 @@
     <string name="cambiar_contrase_a">Cambiar contraseña</string>
     <string name="eliminar_cuenta">Eliminar cuenta</string>
     <string name="elegir_idioma">Elegir idioma</string>
+    <string name="consultar_tiempo">Consultar Tiempo</string>
+    <string name="cerrar_sesi_n">Cerrar Sesión</string>
+    <string name="bienvenido_a_tu_sesi_n_qu_desea_realizar">Bienvenido a tu sesión ¿Qué desea realizar?</string>
 </resources>

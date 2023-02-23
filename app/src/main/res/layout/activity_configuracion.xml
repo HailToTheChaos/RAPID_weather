@@ -107,8 +107,8 @@
 
     <Spinner
         android:id="@+id/spinnerIdioma"
-        android:layout_width="214dp"
-        android:layout_height="36dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
         android:layout_marginTop="63dp"
         android:layout_marginEnd="60dp"
@@ -116,5 +116,6 @@
         app:layout_constraintBottom_toTopOf="@+id/button_eliminar_cuenta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/button_cambiarContraseña" />
+        app:layout_constraintTop_toBottomOf="@+id/button_cambiarContraseña"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

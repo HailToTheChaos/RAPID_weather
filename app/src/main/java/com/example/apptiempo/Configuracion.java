@@ -133,19 +133,17 @@ public class Configuracion extends AppCompatActivity implements AdapterView.OnIt
         String languageToLoad = null;
 
         if(lang.equals("Español")){
-            languageToLoad="es";
-        }else if(lang.equals("English")) {
-            languageToLoad = "en";
-        }
 
-        if(languageToLoad!=null) {
+        }else if(lang.equals("English")) {
             Resources res = Configuracion.this.getResources();
             DisplayMetrics en = res.getDisplayMetrics();
             android.content.res.Configuration enf = res.getConfiguration();
-            enf.locale = new Locale(languageToLoad);
+            enf.locale = new Locale("en");
             res.updateConfiguration(enf,en);
+            Intent i = new Intent(getApplicationContext(),MainActivity.class);
+            startActivity(i);
+            finish();
         }
-
     }
 
     @Override
