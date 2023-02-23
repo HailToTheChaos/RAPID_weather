@@ -131,13 +131,13 @@ public class Configuracion extends AppCompatActivity implements AdapterView.OnIt
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String lang= parent.getItemAtPosition(position).toString();
         String languageToLoad = null;
-        System.out.println(lang);
+
         if(lang.equals("Español")){
             languageToLoad="es";
         }else if(lang.equals("English")) {
             languageToLoad = "en";
         }
-        System.out.println(languageToLoad);
+
         if(languageToLoad!=null) {
             Resources res = Configuracion.this.getResources();
             DisplayMetrics en = res.getDisplayMetrics();
