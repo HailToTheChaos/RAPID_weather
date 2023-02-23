@@ -56,8 +56,6 @@ public class RegistroActivity extends AppCompatActivity {
         String password = intro_pwd.getText().toString();
         String password_conf = intro_pwd_conf.getText().toString();
 
-
-
         if (validaciones(email, password, password_conf)) {
             progressBar.setVisibility(View.VISIBLE);
             myAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

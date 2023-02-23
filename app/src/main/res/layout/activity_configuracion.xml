@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:text="Nombre:"
+        android:text="@string/nombre"
         android:textColor="#1B3AE3"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/textView_nombre_configuracion"
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
-        android:text="Correo: "
+        android:text="@string/email"
         android:textColor="#FF1B3AE3"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/textView_correo_configuracion"
@@ -69,7 +69,7 @@
         android:layout_marginTop="31dp"
         android:layout_marginBottom="294dp"
         android:onClick="cambiar_contrasenya"
-        android:text="Cambiar contraseña"
+        android:text="@string/cambiar_contrase_a"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,13 +77,44 @@
 
     <Button
         android:id="@+id/button_eliminar_cuenta"
-        android:layout_width="208dp"
-        android:layout_height="52dp"
-        android:layout_marginBottom="156dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="208dp"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="#DD281B"
         android:onClick="eliminar_cuenta"
-        android:text="Eliminar cuenta"
+        android:text="@string/eliminar_cuenta"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_cambiarContraseña" />
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="125dp"
+        android:text="@string/elegir_idioma"
+        app:layout_constraintBottom_toTopOf="@+id/button_eliminar_cuenta"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerIdioma"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_cambiarContraseña"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Spinner
+        android:id="@+id/spinnerIdioma"
+        android:layout_width="214dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="63dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="109dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_eliminar_cuenta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/button_cambiarContraseña" />
 </androidx.constraintlayout.widget.ConstraintLayout>

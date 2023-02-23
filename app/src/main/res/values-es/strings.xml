@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">RAPID Weather</string>
     <string name="consultar">Consultar</string>
@@ -33,9 +34,4 @@
     <string name="cambiar_contrase_a">Cambiar contraseña</string>
     <string name="eliminar_cuenta">Eliminar cuenta</string>
     <string name="elegir_idioma">Elegir idioma</string>
-
-    <string-array name="language_option">
-        <item>Español</item>
-        <item>English</item>
-    </string-array>
 </resources>

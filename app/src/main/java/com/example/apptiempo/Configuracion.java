@@ -7,8 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,23 +30,19 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-import org.w3c.dom.ls.LSOutput;
-
+import java.util.Locale;
 import java.util.Objects;
 
-public class Configuracion extends AppCompatActivity {
+public class Configuracion extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private FirebaseAuth myauth;
     private FirebaseFirestore myStore;
     private String idUsuario;
     private TextView nombre;
     private TextView correo;
+    private Spinner sLenguaje;
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return super.onSupportNavigateUp();
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,13 @@ public class Configuracion extends AppCompatActivity {
         myStore = FirebaseFirestore.getInstance();
         nombre = findViewById(R.id.textView_nombre_configuracion);
         correo = findViewById(R.id.textView_correo_configuracion);
+        sLenguaje = findViewById(R.id.spinnerIdioma);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.language_option, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sLenguaje.setAdapter(adapter);
+        sLenguaje.setOnItemSelectedListener(this);
+
         DocumentReference docRef = myStore.collection("usuarios").document(idUsuario);
         docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
@@ -61,6 +70,11 @@ public class Configuracion extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
     public void cambiar_contrasenya(View view) {
         Intent intent = new Intent(getApplicationContext(),SetPassword.class);
         startActivity(intent);
@@ -111,5 +125,31 @@ public class Configuracion extends AppCompatActivity {
             }
         });
         alertDialog.show();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String lang= parent.getItemAtPosition(position).toString();
+        String languageToLoad = null;
+        System.out.println(lang);
+        if(lang.equals("Español")){
+            languageToLoad="es";
+        }else if(lang.equals("English")) {
+            languageToLoad = "en";
+        }
+        System.out.println(languageToLoad);
+        if(languageToLoad!=null) {
+            Resources res = Configuracion.this.getResources();
+            DisplayMetrics en = res.getDisplayMetrics();
+            android.content.res.Configuration enf = res.getConfiguration();
+            enf.locale = new Locale(languageToLoad);
+            res.updateConfiguration(enf,en);
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
