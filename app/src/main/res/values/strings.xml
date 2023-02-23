@@ -38,6 +38,7 @@
     <string name="bienvenido_a_tu_sesi_n_qu_desea_realizar">Bienvenido a tu sesión ¿Qué desea realizar?</string>
 
     <string-array name="language_option">
+        <item>Idioma del sistema</item>
         <item>Español</item>
         <item>English</item>
     </string-array>
