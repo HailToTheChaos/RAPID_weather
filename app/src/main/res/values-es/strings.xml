@@ -37,4 +37,5 @@
     <string name="consultar_tiempo">Consultar Tiempo</string>
     <string name="cerrar_sesi_n">Cerrar Sesión</string>
     <string name="bienvenido_a_tu_sesi_n_qu_desea_realizar">Bienvenido a tu sesión ¿Qué desea realizar?</string>
+    <string name="soport">Soporte</string>
 </resources>

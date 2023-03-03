@@ -110,10 +110,17 @@ public class Configuracion extends AppCompatActivity implements AdapterView.OnIt
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
+                                    SharedPreferences sharedprefs = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+                                    SharedPreferences.Editor edit = sharedprefs.edit();
+                                    edit.putString("name", "");
+                                    edit.apply();
                                     Intent i = new Intent(getApplicationContext(),loginActivity.class);
                                     startActivity(i);
+                                    finish();
                                     Toast.makeText(getApplicationContext(), "Cuenta eliminada.", Toast.LENGTH_SHORT).show();
 
+                                } else {
+                                    Toast.makeText(getApplicationContext(),"No se pudo eliminar la cuenta", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

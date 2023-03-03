@@ -35,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.config_item) {
             Intent i = new Intent(getApplicationContext(), Configuracion.class);
             startActivity(i);
+        }else if (item.getItemId()==R.id.soporte) {
+            Intent a = new Intent(Intent.ACTION_SEND);
+            a.putExtra(Intent.EXTRA_EMAIL, new String[]{"jaimedelafuentedev@gmail.com"});
+            a.putExtra(Intent.EXTRA_SUBJECT, "Problema o inconveniente");
+            a.putExtra(Intent.EXTRA_TEXT, "Descripcion del problema");
+            a.setType("message/rfc822");
+            startActivity(a);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -5,4 +5,7 @@
     <item
         android:id="@+id/config_item"
         android:title="Configuraciones" />
+    <item
+        android:id="@+id/soporte"
+        android:title="@string/soport" />
 </menu>
