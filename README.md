@@ -640,10 +640,7 @@
     <ul class="c30 lst-kix_e35jnv1nerqv-0 start">
         <li class="c10 li-bullet-0"><span>Si le da error de versionado, coja la versi&oacute;n que tiene (generalmente
                 sale en el error) y cambiela en el apartado que hemos mostrado anteriormente (build.gradle del
-                proyecto).</span></li>
-        <li class="c10 li-bullet-0"><span>Usuario de prueba: </span><span class="c24"><a class="c0"
-                    href="mailto:pruebatiempo2dam@gmail.com">pruebatiempo2dam@gmail.com</a></span><span
-                class="c1">&nbsp;/ contrase&ntilde;a: 12345Abc </span></li>
+                proyecto).</span></li>     
         <li class="c10 li-bullet-0"><span class="c1">Despu&eacute;s de crear la cuenta, si a la hora de realizar la
                 verificaci&oacute;n de la cuenta no ve ning&uacute;n correo en la bandeja de entrada, busque en el
                 apartado de &lsquo;Spam&rsquo; o correos no deseados.</span></li>
@@ -694,9 +691,6 @@
                     Listado de comunidades, provincias, municipios con su correspondiente c&oacute;digo INE
                     (github.com)</a></span><span class="c1">&nbsp;(Obtenci&oacute;n del JSON con los c&oacute;digos INE
                 de los municipios)</span></li>
-        <li class="c10 li-bullet-0"><span>Nuestro proyecto en GitHub: </span><span class="c24"><a class="c0"
-                    href="https://www.google.com/url?q=https://github.com/HailToTheChaos/RAPID_weather&amp;sa=D&amp;source=editors&amp;ust=1677965118918143&amp;usg=AOvVaw2dNF8-e6tV-pxXQaYHqjfx">HailToTheChaos/RAPID_weather
-                    (github.com)</a></span></li>
         <li class="c10 li-bullet-0"><span class="c24"><a class="c0"
                     href="https://www.google.com/url?q=https://firebase.google.com/docs/auth/android/manage-users?hl%3Des-419%23java_10&amp;sa=D&amp;source=editors&amp;ust=1677965118918596&amp;usg=AOvVaw3O07dTwxuNNlV6EcAyvqM0">https://firebase.google.com/docs/auth/android/manage-users?hl=es-419#java_10</a></span><span>&nbsp;</span>
         </li>
